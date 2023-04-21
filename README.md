@@ -34,6 +34,8 @@
 > > The solution is not optimal
 >
 > > Since it might get into a local maxima
+>
+> > Time mainly spent on getting candidate result
 
 ### Improvement
 
@@ -46,3 +48,5 @@
 > > Accelerate remove and search process
 >
 > > Replace Map with other kind of structure
+>
+> > Add multi thread to accelerate the process

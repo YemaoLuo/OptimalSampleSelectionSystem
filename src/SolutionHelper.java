@@ -110,12 +110,20 @@ public class SolutionHelper {
     public List<List<Integer>> getResult(List<List<Integer>> possibleResults, Map<List<Integer>, List<List<Integer>>> coverListMap) {
         List<List<Integer>> result = new ArrayList<>();
         double initSize = coverListMap.size();
+        long removeCoverListMapKeyTime = 0, getCandidateResultTime = 0;
         while (!coverListMap.isEmpty()) {
+            long startTime = System.currentTimeMillis();
             System.out.println(String.format("%.2f", (1 - coverListMap.size() / initSize) * 100) + "%");
             List<Integer> candidateResult = getCandidateResult(possibleResults, coverListMap);
+            getCandidateResultTime += System.currentTimeMillis() - startTime;
+            startTime = System.currentTimeMillis();
             result.add(candidateResult);
             removeCoverListMapKey(candidateResult, coverListMap);
+            removeCoverListMapKeyTime += System.currentTimeMillis() - startTime;
         }
+        System.out.println("Remove cover list time: " + removeCoverListMapKeyTime + " ms");
+        System.out.println("Get candidate result time: " + getCandidateResultTime + " ms");
+        System.out.println("=========================================");
         return result;
     }
 }
