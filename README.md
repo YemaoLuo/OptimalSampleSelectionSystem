@@ -34,3 +34,15 @@
 > > The solution is not optimal
 >
 > > Since it might get into a local maxima
+
+### Improvement
+
+> Algorithm
+> > Avoid local maxima
+>
+> Data Structure
+> > How to accelerate get result process
+>
+> > Accelerate remove and search process
+>
+> > Replace Map with other kind of structure
