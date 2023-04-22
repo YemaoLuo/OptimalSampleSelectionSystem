@@ -1,7 +1,7 @@
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class SolutionHelperThread {
+public class SolutionHelper1_0 {
 
     // Generate chosen samples
     public List<Integer> generateChosenSamples(int m, int n) {

@@ -51,3 +51,6 @@
 >
 > > Add multi thread to accelerate the process
 > > > Reduced half of time cost
+>
+> > Using coverList to generate two map and use sub set to represent key which is using space to exchange for time
+> > > Reduced 70% of time cost outstanding!! :)

@@ -2,12 +2,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-public class OptimizeSolutionThread {
+public class OptimizeSolution2_0 {
 
     public static void optimizeSolution() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Input m, n, k, j, s: ");
-        SolutionHelperThread sh = new SolutionHelperThread();
+        SolutionHelper2_0 sh = new SolutionHelper2_0();
         int m = sc.nextInt(), n = sc.nextInt(), k = sc.nextInt(), j = sc.nextInt(), s = sc.nextInt();
         long startTime = System.currentTimeMillis();
         System.out.println("=====================================");
@@ -35,7 +35,7 @@ public class OptimizeSolutionThread {
         System.out.println("=====================================");
 
         tempTime = System.currentTimeMillis();
-        List<List<Integer>> result = sh.getResult(possibleResults, coverListMap);
+        List<List<Integer>> result = sh.getResult(possibleResults, coverListMap, j);
         System.out.println("Result: " + result);
         System.out.println("Result size: " + result.size());
         System.out.println("Time cost: " + (System.currentTimeMillis() - tempTime) + " ms");
