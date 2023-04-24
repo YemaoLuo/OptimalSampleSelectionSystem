@@ -87,13 +87,13 @@ public class SolutionHelper1_1_ex {
     }
 
     public List<Integer> getCandidateResult(List<List<Integer>> possibleResults, Map<List<Integer>, List<List<Integer>>> coverListMap) {
-        ConcurrentHashMap<List<Integer>, Integer> countMap = new ConcurrentHashMap<>();
+        Map<List<Integer>, Integer> countMap = new ConcurrentHashMap<>();
         possibleResults.parallelStream().forEach(possibleResult -> {
             coverListMap.entrySet().parallelStream().forEach(next -> {
                 List<List<Integer>> coverList = next.getValue();
                 for (List<Integer> integerList : coverList) {
                     if (possibleResult.containsAll(integerList)) {
-                        countMap.put(possibleResult, countMap.getOrDefault(possibleResult, 0) + 1);
+                        countMap.merge(possibleResult, 1, Integer::sum);
                         break;
                     }
                 }
@@ -116,6 +116,7 @@ public class SolutionHelper1_1_ex {
 //            getCandidateResultTime += System.currentTimeMillis() - startTime;
             startTime = System.currentTimeMillis();
             result.add(candidateResult);
+            possibleResults.remove(candidateResult);
             removeCoverListMapKey(candidateResult, coverListMap);
 //            removeCoverListMapKeyTime += System.currentTimeMillis() - startTime;
         }
