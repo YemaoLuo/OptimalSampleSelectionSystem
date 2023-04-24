@@ -95,17 +95,22 @@ public class SolutionHelper1_1 {
                 List<List<Integer>> coverList = next.getValue();
                 for (List<Integer> integerList : coverList) {
                     if (possibleResult.containsAll(integerList)) {
-                        tempMax.getAndSet(tempMax.get() + 1);
+                        synchronized (tempMax) {
+                            tempMax.getAndSet(tempMax.get() + 1);
+                        }
                         break;
                     }
                 }
             });
-            if (tempMax.get() > maxCover.get()) {
-                maxCover.set(tempMax.get());
-                index.set(possibleResults.indexOf(possibleResult));
-            }
+            getAndSet(maxCover, tempMax);
         });
         return possibleResults.get(index.get());
+    }
+
+    public synchronized void getAndSet(AtomicInteger maxCover, AtomicInteger tempMax) {
+        if (tempMax.get() > maxCover.get()) {
+            maxCover.set(tempMax.get());
+        }
     }
 
     public List<List<Integer>> getResult(List<List<Integer>> possibleResults, Map<List<Integer>, List<List<Integer>>> coverListMap) {
