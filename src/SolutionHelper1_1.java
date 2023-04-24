@@ -93,7 +93,7 @@ public class SolutionHelper1_1 {
                 List<List<Integer>> coverList = next.getValue();
                 for (List<Integer> integerList : coverList) {
                     if (possibleResult.containsAll(integerList)) {
-                        countMap.compute(possibleResult, (key, value) -> (value == null) ? 1 : value + 1);
+                        countMap.merge(possibleResult, 1, Integer::sum);
                         break;
                     }
                 }
