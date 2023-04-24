@@ -24,6 +24,7 @@ public class Experiment {
             BufferedWriter bw = new BufferedWriter(fw);
             int m = 54, k = 7, j = 5, s = 3;
             for (int n = 7; n <= 25; n++) {
+                System.out.println("n = " + n);
                 bw.write("n = " + n + "\n");
                 bw.write("====================================\n");
 

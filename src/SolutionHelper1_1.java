@@ -1,6 +1,5 @@
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class SolutionHelper1_1 {
 
@@ -91,7 +90,7 @@ public class SolutionHelper1_1 {
         AtomicInteger maxCover = new AtomicInteger(Integer.MIN_VALUE);
         AtomicInteger index = new AtomicInteger();
         possibleResults.parallelStream().forEach(possibleResult -> {
-            AtomicReference<Integer> tempMax = new AtomicReference<>(0);
+            AtomicInteger tempMax = new AtomicInteger(0);
             coverListMap.entrySet().parallelStream().forEach(next -> {
                 List<List<Integer>> coverList = next.getValue();
                 for (List<Integer> integerList : coverList) {
