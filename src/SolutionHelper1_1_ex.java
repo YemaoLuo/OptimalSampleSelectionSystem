@@ -1,8 +1,7 @@
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
-public class SolutionHelper1_1 {
+public class SolutionHelper1_1_ex {
 
     // Generate chosen samples
     public List<Integer> generateChosenSamples(int m, int n) {
@@ -91,22 +90,20 @@ public class SolutionHelper1_1 {
         AtomicInteger maxCover = new AtomicInteger(Integer.MIN_VALUE);
         AtomicInteger index = new AtomicInteger();
         possibleResults.parallelStream().forEach(possibleResult -> {
-            AtomicReference<Integer> tempMax = new AtomicReference<>(0);
+            AtomicInteger tempMax = new AtomicInteger();
             coverListMap.entrySet().parallelStream().forEach(next -> {
                 List<List<Integer>> coverList = next.getValue();
                 for (List<Integer> integerList : coverList) {
                     if (possibleResult.containsAll(integerList)) {
-                        tempMax.getAndSet(tempMax.get() + 1);
+                        tempMax.getAndIncrement();
                         break;
                     }
                 }
-            });
-            synchronized (maxCover) {
                 if (tempMax.get() > maxCover.get()) {
                     maxCover.set(tempMax.get());
                     index.set(possibleResults.indexOf(possibleResult));
                 }
-            }
+            });
         });
         return possibleResults.get(index.get());
     }
@@ -117,7 +114,6 @@ public class SolutionHelper1_1 {
         long removeCoverListMapKeyTime = 0, getCandidateResultTime = 0;
         while (!coverListMap.isEmpty()) {
             long startTime = System.currentTimeMillis();
-            System.out.println(String.format("%.2f", (1 - coverListMap.size() / initSize) * 100) + "%");
             List<Integer> candidateResult = getCandidateResult(possibleResults, coverListMap);
             getCandidateResultTime += System.currentTimeMillis() - startTime;
             startTime = System.currentTimeMillis();
@@ -125,9 +121,6 @@ public class SolutionHelper1_1 {
             removeCoverListMapKey(candidateResult, coverListMap);
             removeCoverListMapKeyTime += System.currentTimeMillis() - startTime;
         }
-        System.out.println("Remove cover list time: " + removeCoverListMapKeyTime + " ms");
-        System.out.println("Get candidate result time: " + getCandidateResultTime + " ms");
-        System.out.println("=========================================");
         return result;
     }
 }
