@@ -122,6 +122,7 @@ public class SolutionHelper1_0 {
             startTime = System.currentTimeMillis();
             result.add(candidateResult);
             removeCoverListMapKey(candidateResult, coverListMap);
+            possibleResults.remove(candidateResult);
             removeCoverListMapKeyTime += System.currentTimeMillis() - startTime;
         }
         System.out.println("Remove cover list time: " + removeCoverListMapKeyTime + " ms");
