@@ -101,11 +101,9 @@ public class SolutionHelper1_1 {
                     }
                 }
             });
-            synchronized (maxCover) {
-                if (tempMax.get() > maxCover.get()) {
-                    maxCover.set(tempMax.get());
-                    index.set(possibleResults.indexOf(possibleResult));
-                }
+            if (tempMax.get() > maxCover.get()) {
+                maxCover.set(tempMax.get());
+                index.set(possibleResults.indexOf(possibleResult));
             }
         });
         return possibleResults.get(index.get());
