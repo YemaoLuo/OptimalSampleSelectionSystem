@@ -87,13 +87,13 @@ public class SolutionHelper1_1 {
     }
 
     public List<Integer> getCandidateResult(List<List<Integer>> possibleResults, Map<List<Integer>, List<List<Integer>>> coverListMap) {
-        ConcurrentHashMap<List<Integer>, Integer> countMap = new ConcurrentHashMap<>();
+        Map<List<Integer>, Integer> countMap = new ConcurrentHashMap<>();
         possibleResults.parallelStream().forEach(possibleResult -> {
             coverListMap.entrySet().parallelStream().forEach(next -> {
                 List<List<Integer>> coverList = next.getValue();
                 for (List<Integer> integerList : coverList) {
                     if (possibleResult.containsAll(integerList)) {
-                        countMap.put(possibleResult, countMap.getOrDefault(possibleResult, 0) + 1);
+                        countMap.compute(possibleResult, (key, value) -> (value == null) ? 1 : value + 1);
                         break;
                     }
                 }

@@ -53,7 +53,7 @@ public class Experiment {
                 bw.write("Time cost: " + (System.currentTimeMillis() - tempTime) + " ms\n");
                 bw.write("=====================================\n");
 
-                bw.write("Total time cost: " + (System.currentTimeMillis() - startTime) + " ms");
+                bw.write("Total time cost: " + (System.currentTimeMillis() - startTime) + " ms\n");
 
                 bw.write("====================================\n");
                 bw.newLine();
