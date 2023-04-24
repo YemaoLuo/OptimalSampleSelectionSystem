@@ -50,4 +50,4 @@
 > > Replace Map with other kind of structure
 >
 > > Add multi thread to accelerate the process
-> > > Reduced half of time cost
+> > > Reduced half of time cost when n is large
