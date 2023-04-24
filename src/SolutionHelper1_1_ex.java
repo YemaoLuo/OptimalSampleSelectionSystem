@@ -1,5 +1,5 @@
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class SolutionHelper1_1_ex {
 
@@ -87,40 +87,41 @@ public class SolutionHelper1_1_ex {
     }
 
     public List<Integer> getCandidateResult(List<List<Integer>> possibleResults, Map<List<Integer>, List<List<Integer>>> coverListMap) {
-        AtomicInteger maxCover = new AtomicInteger(Integer.MIN_VALUE);
-        AtomicInteger index = new AtomicInteger();
+        ConcurrentHashMap<List<Integer>, Integer> countMap = new ConcurrentHashMap<>();
         possibleResults.parallelStream().forEach(possibleResult -> {
-            AtomicInteger tempMax = new AtomicInteger();
             coverListMap.entrySet().parallelStream().forEach(next -> {
                 List<List<Integer>> coverList = next.getValue();
                 for (List<Integer> integerList : coverList) {
                     if (possibleResult.containsAll(integerList)) {
-                        tempMax.getAndIncrement();
+                        countMap.put(possibleResult, countMap.getOrDefault(possibleResult, 0) + 1);
                         break;
                     }
                 }
-                if (tempMax.get() > maxCover.get()) {
-                    maxCover.set(tempMax.get());
-                    index.set(possibleResults.indexOf(possibleResult));
-                }
             });
         });
-        return possibleResults.get(index.get());
+        Optional<Map.Entry<List<Integer>, Integer>> maxEntry = countMap.entrySet()
+                .stream()
+                .max(Map.Entry.comparingByValue());
+        return maxEntry.map(Map.Entry::getKey).orElse(null);
     }
 
     public List<List<Integer>> getResult(List<List<Integer>> possibleResults, Map<List<Integer>, List<List<Integer>>> coverListMap) {
         List<List<Integer>> result = new ArrayList<>();
-        double initSize = coverListMap.size();
-        long removeCoverListMapKeyTime = 0, getCandidateResultTime = 0;
+//        double initSize = coverListMap.size();
+//        long removeCoverListMapKeyTime = 0, getCandidateResultTime = 0;
         while (!coverListMap.isEmpty()) {
             long startTime = System.currentTimeMillis();
+            //System.out.println(String.format("%.2f", (1 - coverListMap.size() / initSize) * 100) + "%");
             List<Integer> candidateResult = getCandidateResult(possibleResults, coverListMap);
-            getCandidateResultTime += System.currentTimeMillis() - startTime;
+//            getCandidateResultTime += System.currentTimeMillis() - startTime;
             startTime = System.currentTimeMillis();
             result.add(candidateResult);
             removeCoverListMapKey(candidateResult, coverListMap);
-            removeCoverListMapKeyTime += System.currentTimeMillis() - startTime;
+//            removeCoverListMapKeyTime += System.currentTimeMillis() - startTime;
         }
+        //System.out.println("Remove cover list time: " + removeCoverListMapKeyTime + " ms");
+        //System.out.println("Get candidate result time: " + getCandidateResultTime + " ms");
+        //System.out.println("=========================================");
         return result;
     }
 }
