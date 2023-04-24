@@ -1,5 +1,5 @@
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class SolutionHelper1_1 {
 
@@ -87,30 +87,22 @@ public class SolutionHelper1_1 {
     }
 
     public List<Integer> getCandidateResult(List<List<Integer>> possibleResults, Map<List<Integer>, List<List<Integer>>> coverListMap) {
-        AtomicInteger maxCover = new AtomicInteger(Integer.MIN_VALUE);
-        AtomicInteger index = new AtomicInteger();
+        ConcurrentHashMap<List<Integer>, Integer> countMap = new ConcurrentHashMap<>();
         possibleResults.parallelStream().forEach(possibleResult -> {
-            AtomicInteger tempMax = new AtomicInteger(0);
             coverListMap.entrySet().parallelStream().forEach(next -> {
                 List<List<Integer>> coverList = next.getValue();
                 for (List<Integer> integerList : coverList) {
                     if (possibleResult.containsAll(integerList)) {
-                        synchronized (tempMax) {
-                            tempMax.getAndSet(tempMax.get() + 1);
-                        }
+                        countMap.put(possibleResult, countMap.getOrDefault(possibleResult, 0) + 1);
                         break;
                     }
                 }
             });
-            getAndSet(maxCover, tempMax);
         });
-        return possibleResults.get(index.get());
-    }
-
-    public synchronized void getAndSet(AtomicInteger maxCover, AtomicInteger tempMax) {
-        if (tempMax.get() > maxCover.get()) {
-            maxCover.set(tempMax.get());
-        }
+        Optional<Map.Entry<List<Integer>, Integer>> maxEntry = countMap.entrySet()
+                .stream()
+                .max(Map.Entry.comparingByValue());
+        return maxEntry.map(Map.Entry::getKey).orElse(null);
     }
 
     public List<List<Integer>> getResult(List<List<Integer>> possibleResults, Map<List<Integer>, List<List<Integer>>> coverListMap) {
