@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class Experiment {
+public class ExperimentOS11 {
 
     public static void main(String[] args) {
         SolutionHelper1_1_ex sh11 = new SolutionHelper1_1_ex();

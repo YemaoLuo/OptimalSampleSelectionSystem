@@ -1,7 +1,6 @@
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
-public class SolutionHelper1_1_ex {
+public class SolutionHelper_ex {
 
     // Generate chosen samples
     public List<Integer> generateChosenSamples(int m, int n) {
@@ -62,7 +61,7 @@ public class SolutionHelper1_1_ex {
     }
 
     public Map<List<Integer>, List<List<Integer>>> generateCoverListMap(List<List<Integer>> coverList, int s) {
-        Map<List<Integer>, List<List<Integer>>> coverListMap = new HashMap<>((int) (coverList.size() / 0.75 + 1));
+        Map<List<Integer>, List<List<Integer>>> coverListMap = new HashMap<>();
         for (List<Integer> integers : coverList) {
             coverListMap.put(integers, generateCoverList(integers, s));
         }
@@ -87,22 +86,25 @@ public class SolutionHelper1_1_ex {
     }
 
     public List<Integer> getCandidateResult(List<List<Integer>> possibleResults, Map<List<Integer>, List<List<Integer>>> coverListMap) {
-        Map<List<Integer>, Integer> countMap = new ConcurrentHashMap<>((int) (possibleResults.size() / 0.75 + 1));
-        possibleResults.parallelStream().forEach(possibleResult -> {
-            coverListMap.entrySet().parallelStream().forEach(next -> {
+        int maxCover = Integer.MIN_VALUE;
+        List<Integer> candidateResult = new ArrayList<>();
+        for (List<Integer> possibleResult : possibleResults) {
+            int tempMax = 0;
+            for (Map.Entry<List<Integer>, List<List<Integer>>> next : coverListMap.entrySet()) {
                 List<List<Integer>> coverList = next.getValue();
                 for (List<Integer> integerList : coverList) {
                     if (possibleResult.containsAll(integerList)) {
-                        countMap.merge(possibleResult, 1, Integer::sum);
+                        tempMax++;
                         break;
                     }
                 }
-            });
-        });
-        Optional<Map.Entry<List<Integer>, Integer>> maxEntry = countMap.entrySet()
-                .stream()
-                .max(Map.Entry.comparingByValue());
-        return maxEntry.map(Map.Entry::getKey).orElse(null);
+            }
+            if (tempMax > maxCover) {
+                maxCover = tempMax;
+                candidateResult = possibleResult;
+            }
+        }
+        return candidateResult;
     }
 
     public List<List<Integer>> getResult(List<List<Integer>> possibleResults, Map<List<Integer>, List<List<Integer>>> coverListMap) {
@@ -117,7 +119,6 @@ public class SolutionHelper1_1_ex {
             startTime = System.currentTimeMillis();
             result.add(candidateResult);
             removeCoverListMapKey(candidateResult, coverListMap);
-            possibleResults.remove(candidateResult);
 //            removeCoverListMapKeyTime += System.currentTimeMillis() - startTime;
         }
         //System.out.println("Remove cover list time: " + removeCoverListMapKeyTime + " ms");
