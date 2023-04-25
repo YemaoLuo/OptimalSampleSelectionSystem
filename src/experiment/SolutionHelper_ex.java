@@ -1,4 +1,4 @@
-package algorithm;
+package experiment;
 
 import java.util.*;
 

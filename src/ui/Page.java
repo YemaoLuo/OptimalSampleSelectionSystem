@@ -13,50 +13,85 @@ public class Page extends JFrame {
     private JTextField textField1, textField2, textField3, textField4, textField5;
     private JButton button;
     private JTextArea textArea;
-    private JProgressBar progressBar;
-
 
     public Page() {
         setTitle("Optimize samples system");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(8, 2));
+        JPanel panel = new JPanel(new GridBagLayout());
 
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1;
+        c.insets = new Insets(10, 10, 0, 10);
+        c.gridx = 0;
+        c.gridy = 0;
         label1 = new JLabel("m：");
+        panel.add(label1, c);
+
+        c.gridx = 1;
+        c.gridy = 0;
         textField1 = new JTextField();
-        panel.add(label1);
-        panel.add(textField1);
+        panel.add(textField1, c);
 
+        c.gridx = 0;
+        c.gridy = 1;
         label2 = new JLabel("n：");
+        panel.add(label2, c);
+
+        c.gridx = 1;
+        c.gridy = 1;
         textField2 = new JTextField();
-        panel.add(label2);
-        panel.add(textField2);
+        panel.add(textField2, c);
 
+        c.gridx = 0;
+        c.gridy = 2;
         label3 = new JLabel("k：");
+        panel.add(label3, c);
+
+        c.gridx = 1;
+        c.gridy = 2;
         textField3 = new JTextField();
-        panel.add(label3);
-        panel.add(textField3);
+        panel.add(textField3, c);
 
+        c.gridx = 0;
+        c.gridy = 3;
         label4 = new JLabel("j：");
+        panel.add(label4, c);
+
+        c.gridx = 1;
+        c.gridy = 3;
         textField4 = new JTextField();
-        panel.add(label4);
-        panel.add(textField4);
+        panel.add(textField4, c);
 
+        c.gridx = 0;
+        c.gridy = 4;
         label5 = new JLabel("s：");
+        panel.add(label5, c);
+
+        c.gridx = 1;
+        c.gridy = 4;
         textField5 = new JTextField();
-        panel.add(label5);
-        panel.add(textField5);
+        panel.add(textField5, c);
 
-        progressBar = new JProgressBar(0, 100);
-        progressBar.setValue(0);
-        progressBar.setStringPainted(true);
-        panel.add(progressBar);
-
+        c.fill = GridBagConstraints.BOTH;
+        c.gridx = 0;
+        c.gridy = 6;
+        c.gridwidth = 2;
+        c.weighty = 1;
+        c.anchor = GridBagConstraints.NORTH;
+        c.insets = new Insets(10, 10, 10, 10);
         textArea = new JTextArea();
-        panel.add(textArea);
+        panel.add(new JScrollPane(textArea), c);
 
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.gridy = 7;
+        c.gridwidth = 2;
+        c.weighty = 0;
+        c.anchor = GridBagConstraints.CENTER;
+        c.insets = new Insets(10, 10, 10, 10);
         button = new JButton("开始");
         button.addActionListener(new ActionListener() {
             @Override
@@ -64,7 +99,7 @@ public class Page extends JFrame {
                 process();
             }
         });
-        panel.add(button);
+        panel.add(button, c);
 
         add(panel);
 
@@ -109,11 +144,7 @@ public class Page extends JFrame {
         List<List<Integer>> result = new ArrayList<>();
         double initSize = coverListMap.size();
         long removeCoverListMapKeyTime = 0, getCandidateResultTime = 0;
-        double percent = 0;
         while (!coverListMap.isEmpty()) {
-            percent = (1 - coverListMap.size() / initSize) * 100;
-            progressBar.setValue((int) percent);
-            progressBar.repaint();
             long startTime5 = System.currentTimeMillis();
             System.out.println(String.format("%.2f", (1 - coverListMap.size() / initSize) * 100) + "%");
             List<Integer> candidateResult = sh.getCandidateResult(possibleResults, coverListMap);
@@ -135,8 +166,6 @@ public class Page extends JFrame {
 
         System.out.println("Total time cost: " + (System.currentTimeMillis() - startTime) + " ms");
         System.out.println("=====================================");
-
-        progressBar.setValue(100);
 
         textArea.setText("Result: " + result + "\n"
                 + "Reuslt Size: " + result.size() + "\n"

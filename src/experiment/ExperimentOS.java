@@ -1,7 +1,5 @@
 package experiment;
 
-import algorithm.SolutionHelper_ex;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
