@@ -13,6 +13,9 @@ public class Page extends JFrame {
     private JTextField textField1, textField2, textField3, textField4, textField5;
     private JButton button;
     private JTextArea textArea;
+    private JProgressBar progressBar;
+    private JLabel progressLabel;
+    private MySwingWorker worker;
 
     public Page() {
         setTitle("Optimize samples system");
@@ -91,85 +94,111 @@ public class Page extends JFrame {
         c.gridwidth = 2;
         c.weighty = 0;
         c.anchor = GridBagConstraints.CENTER;
-        c.insets = new Insets(10, 10, 10, 10);
-        button = new JButton("开始");
+        c.insets = new Insets(10, 10, 0, 10);
+        button = new JButton("Start/End");
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                process();
+                if (worker != null && !worker.isDone()) {
+                    worker.cancel(true);
+                    return;
+                }
+                worker = new MySwingWorker();
+                worker.execute();
             }
         });
         panel.add(button, c);
+
+        c.fill = GridBagConstraints.NONE;
+        c.gridx = 0;
+        c.gridy = 8;
+        c.gridwidth = 1;
+        c.weighty = 0;
+        c.anchor = GridBagConstraints.CENTER;
+        c.insets = new Insets(5, 10, 10, 10);
+        progressLabel = new JLabel("Progress: 0%", JLabel.CENTER);
+        panel.add(progressLabel, c);
+
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 1;
+        c.gridy = 8;
+        c.gridwidth = 1;
+        c.weighty = 0;
+        c.anchor = GridBagConstraints.CENTER;
+        c.insets = new Insets(5, 10, 10, 10);
+        progressBar = new JProgressBar();
+        progressBar.setMinimum(0);
+        progressBar.setMaximum(100);
+        panel.add(progressBar, c);
 
         add(panel);
 
         setVisible(true);
     }
 
-    public void process() {
-        int m = Integer.parseInt(textField1.getText());
-        int n = Integer.parseInt(textField2.getText());
-        int k = Integer.parseInt(textField3.getText());
-        int j = Integer.parseInt(textField4.getText());
-        int s = Integer.parseInt(textField5.getText());
+    class MySwingWorker extends SwingWorker<List<List<Integer>>, Integer> {
+        @Override
+        protected List<List<Integer>> doInBackground() {
+            textArea.setText("Starting...");
+            progressLabel.setText("Progress: 0%");
+            progressBar.setValue(0);
 
-        SolutionHelperUI sh = new SolutionHelperUI();
-        long startTime = System.currentTimeMillis();
-        System.out.println("=====================================");
+            List<List<Integer>> result = new ArrayList<>();
+            int m = Integer.parseInt(textField1.getText());
+            int n = Integer.parseInt(textField2.getText());
+            int k = Integer.parseInt(textField3.getText());
+            int j = Integer.parseInt(textField4.getText());
+            int s = Integer.parseInt(textField5.getText());
 
-        long tempTime = System.currentTimeMillis();
-        java.util.List<Integer> chosenSamples = sh.generateChosenSamples(m, n);
-        System.out.println("Chosen samples: " + chosenSamples);
-        System.out.println("Chosen samples size: " + chosenSamples.size());
-        System.out.println("Time cost: " + (System.currentTimeMillis() - tempTime) + " ms");
-        System.out.println("=====================================");
+            SolutionHelperUI sh = new SolutionHelperUI();
+            long startTime = System.currentTimeMillis();
+            java.util.List<Integer> chosenSamples = sh.generateChosenSamples(m, n);
+            java.util.List<java.util.List<Integer>> possibleResults = sh.generatePossibleResults(chosenSamples, k);
+            java.util.List<java.util.List<Integer>> coverList = sh.generateCoverList(chosenSamples, j);
+            Map<java.util.List<Integer>, java.util.List<java.util.List<Integer>>> coverListMap = sh.generateCoverListMap(coverList, s);
 
-        tempTime = System.currentTimeMillis();
-        java.util.List<java.util.List<Integer>> possibleResults = sh.generatePossibleResults(chosenSamples, k);
-        //System.out.println("Possible results: " + possibleResults);
-        System.out.println("Possible results size: " + possibleResults.size());
-        System.out.println("Time cost: " + (System.currentTimeMillis() - tempTime) + " ms");
-        System.out.println("=====================================");
+            double initSize = coverListMap.size();
+            while (!coverListMap.isEmpty()) {
+                if (isCancelled()) {
+                    return null;
+                }
+                List<Integer> candidateResult = sh.getCandidateResult(possibleResults, coverListMap);
+                result.add(candidateResult);
+                sh.removeCoverListMapKey(candidateResult, coverListMap);
+                possibleResults.remove(candidateResult);
+                double percent = (1 - coverListMap.size() / initSize) * 100;
+                publish((int) percent);
+                setProgress((int) percent);
+            }
 
-        tempTime = System.currentTimeMillis();
-        java.util.List<java.util.List<Integer>> coverList = sh.generateCoverList(chosenSamples, j);
-        Map<java.util.List<Integer>, java.util.List<java.util.List<Integer>>> coverListMap = sh.generateCoverListMap(coverList, s);
-        //System.out.println("Cover list map: " + coverListMap);
-        System.out.println("Cover list map size: " + coverListMap.size());
-        System.out.println("Time cost: " + (System.currentTimeMillis() - tempTime) + " ms");
-        System.out.println("=====================================");
+            textArea.setText("Result: " + result + "\n"
+                    + "Reuslt Size: " + result.size() + "\n"
+                    + "Total time cost: " + (System.currentTimeMillis() - startTime) + " ms\n");
 
-        tempTime = System.currentTimeMillis();
-
-        List<List<Integer>> result = new ArrayList<>();
-        double initSize = coverListMap.size();
-        long removeCoverListMapKeyTime = 0, getCandidateResultTime = 0;
-        while (!coverListMap.isEmpty()) {
-            long startTime5 = System.currentTimeMillis();
-            System.out.println(String.format("%.2f", (1 - coverListMap.size() / initSize) * 100) + "%");
-            List<Integer> candidateResult = sh.getCandidateResult(possibleResults, coverListMap);
-            getCandidateResultTime += System.currentTimeMillis() - startTime5;
-            startTime5 = System.currentTimeMillis();
-            result.add(candidateResult);
-            sh.removeCoverListMapKey(candidateResult, coverListMap);
-            possibleResults.remove(candidateResult);
-            removeCoverListMapKeyTime += System.currentTimeMillis() - startTime5;
+            return result;
         }
-        System.out.println("Remove cover list time: " + removeCoverListMapKeyTime + " ms");
-        System.out.println("Get candidate result time: " + getCandidateResultTime + " ms");
-        System.out.println("=========================================");
 
-        System.out.println("Result: " + result);
-        System.out.println("Result size: " + result.size());
-        System.out.println("Time cost: " + (System.currentTimeMillis() - tempTime) + " ms");
-        System.out.println("=====================================");
+        @Override
+        protected void process(List<Integer> chunks) {
+            int value = chunks.get(chunks.size() - 1);
+            progressBar.setValue(value);
+            progressLabel.setText("Progress: " + value + "%");
+        }
 
-        System.out.println("Total time cost: " + (System.currentTimeMillis() - startTime) + " ms");
-        System.out.println("=====================================");
-
-        textArea.setText("Result: " + result + "\n"
-                + "Reuslt Size: " + result.size() + "\n"
-                + "Total time cost: " + (System.currentTimeMillis() - startTime) + " ms\n");
+        @Override
+        protected void done() {
+            if (isCancelled()) {
+                textArea.setText("Cancelled");
+                progressBar.setValue(0);
+                progressLabel.setText("Progress: 0%");
+            } else {
+                try {
+                    List<List<Integer>> result = get();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
     }
 
     public static void main(String[] args) {
