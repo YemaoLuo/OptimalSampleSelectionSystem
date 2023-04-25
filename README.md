@@ -2,11 +2,11 @@
 
 ## Hill-climbing
 
-#### OptimizeSolution
+#### algorithm.OptimizeSolution
 
 > Main.class to run the program
 
-#### SolutionHelper
+#### algorithm.SolutionHelper
 
 > Helper class to write all main methods
 

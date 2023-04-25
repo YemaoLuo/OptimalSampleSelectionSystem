@@ -1,13 +1,15 @@
+package algorithm;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-public class OptimizeSolution {
+public class OptimizeSolution1_0 {
 
     public static void optimizeSolution() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Input m, n, k, j, s: ");
-        SolutionHelper sh = new SolutionHelper();
+        SolutionHelper1_0 sh = new SolutionHelper1_0();
         int m = sc.nextInt(), n = sc.nextInt(), k = sc.nextInt(), j = sc.nextInt(), s = sc.nextInt();
         long startTime = System.currentTimeMillis();
         System.out.println("=====================================");

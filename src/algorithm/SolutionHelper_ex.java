@@ -1,7 +1,8 @@
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
+package algorithm;
 
-public class SolutionHelper1_0 {
+import java.util.*;
+
+public class SolutionHelper_ex {
 
     // Generate chosen samples
     public List<Integer> generateChosenSamples(int m, int n) {
@@ -87,47 +88,44 @@ public class SolutionHelper1_0 {
     }
 
     public List<Integer> getCandidateResult(List<List<Integer>> possibleResults, Map<List<Integer>, List<List<Integer>>> coverListMap) {
-        AtomicInteger maxCover = new AtomicInteger(Integer.MIN_VALUE);
-        AtomicInteger index = new AtomicInteger();
-        for (int i = 0; i < possibleResults.size(); i++) {
-            final int indexI = i;
-            List<Integer> possibleResult = possibleResults.get(i);
-            AtomicInteger tempMax = new AtomicInteger();
-            coverListMap.entrySet().parallelStream().forEach(next -> {
+        int maxCover = Integer.MIN_VALUE;
+        List<Integer> candidateResult = new ArrayList<>();
+        for (List<Integer> possibleResult : possibleResults) {
+            int tempMax = 0;
+            for (Map.Entry<List<Integer>, List<List<Integer>>> next : coverListMap.entrySet()) {
                 List<List<Integer>> coverList = next.getValue();
                 for (List<Integer> integerList : coverList) {
                     if (possibleResult.containsAll(integerList)) {
-                        tempMax.getAndIncrement();
+                        tempMax++;
                         break;
                     }
                 }
-                if (tempMax.get() > maxCover.get()) {
-                    maxCover.set(tempMax.get());
-                    index.set(indexI);
-                }
-            });
+            }
+            if (tempMax > maxCover) {
+                maxCover = tempMax;
+                candidateResult = possibleResult;
+            }
         }
-        return possibleResults.get(index.get());
+        return candidateResult;
     }
 
     public List<List<Integer>> getResult(List<List<Integer>> possibleResults, Map<List<Integer>, List<List<Integer>>> coverListMap) {
         List<List<Integer>> result = new ArrayList<>();
-        double initSize = coverListMap.size();
-        long removeCoverListMapKeyTime = 0, getCandidateResultTime = 0;
+//        double initSize = coverListMap.size();
+//        long removeCoverListMapKeyTime = 0, getCandidateResultTime = 0;
         while (!coverListMap.isEmpty()) {
             long startTime = System.currentTimeMillis();
-            System.out.println(String.format("%.2f", (1 - coverListMap.size() / initSize) * 100) + "%");
+            //System.out.println(String.format("%.2f", (1 - coverListMap.size() / initSize) * 100) + "%");
             List<Integer> candidateResult = getCandidateResult(possibleResults, coverListMap);
-            getCandidateResultTime += System.currentTimeMillis() - startTime;
+//            getCandidateResultTime += System.currentTimeMillis() - startTime;
             startTime = System.currentTimeMillis();
             result.add(candidateResult);
             removeCoverListMapKey(candidateResult, coverListMap);
-            possibleResults.remove(candidateResult);
-            removeCoverListMapKeyTime += System.currentTimeMillis() - startTime;
+//            removeCoverListMapKeyTime += System.currentTimeMillis() - startTime;
         }
-        System.out.println("Remove cover list time: " + removeCoverListMapKeyTime + " ms");
-        System.out.println("Get candidate result time: " + getCandidateResultTime + " ms");
-        System.out.println("=========================================");
+        //System.out.println("Remove cover list time: " + removeCoverListMapKeyTime + " ms");
+        //System.out.println("Get candidate result time: " + getCandidateResultTime + " ms");
+        //System.out.println("=========================================");
         return result;
     }
 }

@@ -1,3 +1,7 @@
+package experiment;
+
+import algorithm.SolutionHelper_ex;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -5,12 +9,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class ExperimentOS11 {
+public class ExperimentOS {
 
     public static void main(String[] args) {
-        SolutionHelper1_1_ex sh11 = new SolutionHelper1_1_ex();
+        SolutionHelper_ex sh = new SolutionHelper_ex();
 
-        String filePath = "/Users/yemaoluo/Documents/CODING/AIAlgorithm/experiment/os11.log";
+        String filePath = "/os.log";
         File file = new File(filePath);
         if (!file.exists()) {
             try {
@@ -31,23 +35,23 @@ public class ExperimentOS11 {
                 long startTime = System.currentTimeMillis();
 
                 long tempTime = System.currentTimeMillis();
-                List<Integer> chosenSamples = sh11.generateChosenSamples(m, n);
+                List<Integer> chosenSamples = sh.generateChosenSamples(m, n);
                 bw.write("Chosen samples: " + chosenSamples + "\n");
                 bw.write("Time cost: " + (System.currentTimeMillis() - tempTime) + " ms\n");
 
                 tempTime = System.currentTimeMillis();
-                List<List<Integer>> possibleResults = sh11.generatePossibleResults(chosenSamples, k);
+                List<List<Integer>> possibleResults = sh.generatePossibleResults(chosenSamples, k);
                 bw.write("Possible results size: " + possibleResults.size() + "\n");
                 bw.write("Time cost: " + (System.currentTimeMillis() - tempTime) + " ms" + "\n");
 
                 tempTime = System.currentTimeMillis();
-                List<List<Integer>> coverList = sh11.generateCoverList(chosenSamples, j);
-                Map<List<Integer>, List<List<Integer>>> coverListMap = sh11.generateCoverListMap(coverList, s);
+                List<List<Integer>> coverList = sh.generateCoverList(chosenSamples, j);
+                Map<List<Integer>, List<List<Integer>>> coverListMap = sh.generateCoverListMap(coverList, s);
                 bw.write("Cover list map size: " + coverListMap.size() + "\n");
                 bw.write("Time cost: " + (System.currentTimeMillis() - tempTime) + " ms\n");
 
                 tempTime = System.currentTimeMillis();
-                List<List<Integer>> result = sh11.getResult(possibleResults, coverListMap);
+                List<List<Integer>> result = sh.getResult(possibleResults, coverListMap);
                 bw.write("Result: " + result + "\n");
                 bw.write("Result size: " + result.size() + "\n");
                 bw.write("Time cost: " + (System.currentTimeMillis() - tempTime) + " ms\n");
