@@ -16,34 +16,34 @@ public class Page extends JFrame {
     private JTextArea textArea;
 
     public Page() {
-        setTitle("输入数据");
+        setTitle("Optimize samples system");
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(6, 2));
 
-        label1 = new JLabel("输入框1：");
+        label1 = new JLabel("m：");
         panel.add(label1);
         textField1 = new JTextField();
         panel.add(textField1);
 
-        label2 = new JLabel("输入框2：");
+        label2 = new JLabel("n：");
         panel.add(label2);
         textField2 = new JTextField();
         panel.add(textField2);
 
-        label3 = new JLabel("输入框3：");
+        label3 = new JLabel("k：");
         panel.add(label3);
         textField3 = new JTextField();
         panel.add(textField3);
 
-        label4 = new JLabel("输入框4：");
+        label4 = new JLabel("j：");
         panel.add(label4);
         textField4 = new JTextField();
         panel.add(textField4);
 
-        label5 = new JLabel("输入框5：");
+        label5 = new JLabel("s：");
         panel.add(label5);
         textField5 = new JTextField();
         panel.add(textField5);
@@ -54,8 +54,8 @@ public class Page extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 int m = Integer.parseInt(textField1.getText());
                 int n = Integer.parseInt(textField2.getText());
-                int j = Integer.parseInt(textField3.getText());
-                int k = Integer.parseInt(textField4.getText());
+                int k = Integer.parseInt(textField3.getText());
+                int j = Integer.parseInt(textField4.getText());
                 int s = Integer.parseInt(textField5.getText());
 
                 SolutionHelper1_1 sh = new SolutionHelper1_1();
