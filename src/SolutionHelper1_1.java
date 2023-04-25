@@ -62,7 +62,7 @@ public class SolutionHelper1_1 {
     }
 
     public Map<List<Integer>, List<List<Integer>>> generateCoverListMap(List<List<Integer>> coverList, int s) {
-        Map<List<Integer>, List<List<Integer>>> coverListMap = new HashMap<>();
+        Map<List<Integer>, List<List<Integer>>> coverListMap = new HashMap<>((int) (coverList.size() / 0.75 + 1));
         for (List<Integer> integers : coverList) {
             coverListMap.put(integers, generateCoverList(integers, s));
         }
@@ -87,7 +87,7 @@ public class SolutionHelper1_1 {
     }
 
     public List<Integer> getCandidateResult(List<List<Integer>> possibleResults, Map<List<Integer>, List<List<Integer>>> coverListMap) {
-        Map<List<Integer>, Integer> countMap = new ConcurrentHashMap<>();
+        Map<List<Integer>, Integer> countMap = new ConcurrentHashMap<>((int) (possibleResults.size() / 0.75 + 1));
         possibleResults.parallelStream().forEach(possibleResult -> {
             coverListMap.entrySet().parallelStream().forEach(next -> {
                 List<List<Integer>> coverList = next.getValue();
