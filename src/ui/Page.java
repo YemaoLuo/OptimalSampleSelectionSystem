@@ -173,9 +173,15 @@ public class Page extends JFrame {
                 setProgress((int) percent);
             }
 
-            textArea.setText("Result: " + result + "\n"
-                    + "Reuslt Size: " + result.size() + "\n"
-                    + "Total time cost: " + (System.currentTimeMillis() - startTime) + " ms\n");
+            String resultStr = "";
+            resultStr += "Result: \n";
+            for (List<Integer> list : result) {
+                resultStr += list.toString() + "\n";
+            }
+            resultStr += "\n";
+            resultStr += "Reuslt Size: " + result.size() + "\n"
+                    + "Total time cost: " + (System.currentTimeMillis() - startTime);
+            textArea.setText(resultStr);
 
             return result;
         }
