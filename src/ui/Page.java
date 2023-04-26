@@ -21,6 +21,8 @@ public class Page extends JFrame {
         setTitle("Optimize samples system");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ImageIcon logoImage = new ImageIcon("src/ui/icon.png");
+        setIconImage(logoImage.getImage());
 
         JPanel panel = new JPanel(new GridBagLayout());
 
