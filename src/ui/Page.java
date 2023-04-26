@@ -18,11 +18,9 @@ public class Page extends JFrame {
     private MySwingWorker worker;
 
     public Page() {
-        setTitle("Optimize samples system");
+        setTitle("Optimize Samples System");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ImageIcon logoImage = new ImageIcon("src/ui/icon.png");
-        setIconImage(logoImage.getImage());
 
         JPanel panel = new JPanel(new GridBagLayout());
 
@@ -141,7 +139,7 @@ public class Page extends JFrame {
     class MySwingWorker extends SwingWorker<List<List<Integer>>, Integer> {
         @Override
         protected List<List<Integer>> doInBackground() {
-            textArea.setText("Starting...");
+            textArea.setText("Starting");
             progressLabel.setText("Progress: 0%");
             progressBar.setValue(0);
 
@@ -188,15 +186,18 @@ public class Page extends JFrame {
 
         @Override
         protected void process(List<Integer> chunks) {
-            int value = chunks.get(chunks.size() - 1);
-            progressBar.setValue(value);
-            progressLabel.setText("Progress: " + value + "%");
+            if (!isCancelled()) {
+                int value = chunks.get(chunks.size() - 1);
+                textArea.setText("Cancelled");
+                progressBar.setValue(value);
+                progressLabel.setText("Progress: " + value + "%");
+            }
         }
 
         @Override
         protected void done() {
             if (isCancelled()) {
-                textArea.setText("Cancelled");
+                textArea.setText("Cancelling please wait for the programe to stop");
                 progressBar.setValue(0);
                 progressLabel.setText("Progress: 0%");
             } else {
