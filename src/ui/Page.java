@@ -188,9 +188,10 @@ public class Page extends JFrame {
         protected void process(List<Integer> chunks) {
             if (!isCancelled()) {
                 int value = chunks.get(chunks.size() - 1);
-                textArea.setText("Cancelled");
                 progressBar.setValue(value);
                 progressLabel.setText("Progress: " + value + "%");
+            } else {
+                textArea.setText("Cancelled");
             }
         }
 
