@@ -180,7 +180,7 @@ public class Page extends JFrame {
             }
             resultStr += "\n";
             resultStr += "Reuslt Size: " + result.size() + "\n"
-                    + "Total time cost: " + (System.currentTimeMillis() - startTime);
+                    + "Total time cost: " + (System.currentTimeMillis() - startTime) + "ms";
             textArea.setText(resultStr);
 
             return result;
