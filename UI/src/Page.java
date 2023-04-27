@@ -9,11 +9,13 @@ import java.util.Map;
 public class Page extends JFrame {
     private JLabel label1, label2, label3, label4, label5;
     private JTextField textField1, textField2, textField3, textField4, textField5;
-    private JButton button;
+    private JButton startEndBtn;
+    private JButton historyBtn;
     private JTextArea textArea;
     private JProgressBar progressBar;
     private JLabel progressLabel;
     private MySwingWorker worker;
+    private DBHelperUI dbh = new DBHelperUI();
 
     public Page() {
         setTitle("Optimize Samples System");
@@ -92,12 +94,12 @@ public class Page extends JFrame {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 7;
-        c.gridwidth = 2;
+        c.gridwidth = 1;
         c.weighty = 0;
         c.anchor = GridBagConstraints.CENTER;
         c.insets = new Insets(10, 10, 0, 10);
-        button = new JButton("Start/End");
-        button.addActionListener(new ActionListener() {
+        startEndBtn = new JButton("Start/End");
+        startEndBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (worker != null && !worker.isDone()) {
@@ -110,7 +112,71 @@ public class Page extends JFrame {
                 worker.execute();
             }
         });
-        panel.add(button, c);
+        panel.add(startEndBtn, c);
+
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 1;
+        c.gridy = 7;
+        c.gridwidth = 1;
+        c.weighty = 0;
+        c.anchor = GridBagConstraints.CENTER;
+        c.insets = new Insets(10, 10, 0, 10);
+        historyBtn = new JButton("History");
+        historyBtn.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panel.setVisible(false);
+                List<String> files = dbh.readAllDBFiles();
+                JPanel historyPanel = new JPanel();
+                historyPanel.setLayout(new BorderLayout());
+                JScrollPane scrollPanel = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                scrollPanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 5, true)); // 设置边框样式
+                JPanel contentPanel = new JPanel();
+                contentPanel.setLayout(new GridLayout(files.size(), 3, 10, 10));
+                for (String file : files) {
+                    JPanel rowPanel = new JPanel();
+                    rowPanel.setLayout(new GridLayout(1, 3, 10, 10));
+                    JLabel fileLabel = new JLabel(file);
+                    rowPanel.add(fileLabel);
+                    JButton check = new JButton("Check");
+                    check.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            String data = dbh.load(file);
+                            UIManager.put("OptionPane.okButtonText", "OK");
+                            JOptionPane.showMessageDialog(null, data, "History Result", JOptionPane.PLAIN_MESSAGE);
+                        }
+                    });
+                    rowPanel.add(check);
+                    JButton remove = new JButton("Remove");
+                    remove.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            dbh.remove(file);
+                            contentPanel.remove(rowPanel);
+                            contentPanel.revalidate();
+                        }
+                    });
+                    rowPanel.add(remove);
+                    contentPanel.add(rowPanel);
+                }
+                scrollPanel.setViewportView(contentPanel);
+                historyPanel.add(scrollPanel, BorderLayout.CENTER);
+                JButton back = new JButton("Back");
+                back.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        historyPanel.setVisible(false);
+                        panel.setVisible(true);
+                    }
+                });
+                historyPanel.add(back, BorderLayout.SOUTH);
+                add(historyPanel, BorderLayout.CENTER);
+                historyPanel.setVisible(true);
+            }
+        });
+        panel.add(historyBtn, c);
 
         c.fill = GridBagConstraints.NONE;
         c.gridx = 0;
@@ -193,6 +259,7 @@ public class Page extends JFrame {
                     + "Total time cost: " + (System.currentTimeMillis() - startTime) + "ms";
             textArea.setText(resultStr);
 
+            dbh.save(m + "-" + n + "-" + k + "-" + j + "-" + s, resultStr);
             return result;
         }
 

@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,10 +11,10 @@ public class DBHelperUI {
         if (loadDB()) {
             String folderPath = "./db/";
             int count = 1;
-            File file = new File(folderPath + fileName + "_" + count + ".data");
+            File file = new File(folderPath + fileName + "-" + count + ".data");
             while (file.exists()) {
                 count++;
-                file = new File(folderPath + fileName + "_" + count + ".data");
+                file = new File(folderPath + fileName + "-" + count + ".data");
             }
             try {
                 file.createNewFile();
@@ -29,7 +30,7 @@ public class DBHelperUI {
     }
 
     public String load(String fileName) {
-        StringBuilder data = null;
+        StringBuilder data = new StringBuilder();
         if (loadDB()) {
             String filePath = "./db/";
             try {
@@ -38,7 +39,7 @@ public class DBHelperUI {
                 BufferedReader br = new BufferedReader(fr);
                 String line;
                 while ((line = br.readLine()) != null) {
-                    data = (data == null ? new StringBuilder("null") : data).append(line);
+                    data.append(line + "\n");
                 }
                 br.close();
             } catch (IOException e) {
@@ -78,7 +79,15 @@ public class DBHelperUI {
             };
             File[] files = folder.listFiles(filter);
             assert files != null;
-            data = Arrays.stream(files).map(File::getName).collect(Collectors.toList());
+            data = Arrays.stream(files).map(File::getName).sorted(new Comparator<String>() {
+                @Override
+                public int compare(String o1, String o2) {
+                    o1 = o1.replace("-", "");
+                    o2 = o2.replace("-", "");
+                    return Integer.parseInt(o1.substring(0, o1.lastIndexOf('.'))) -
+                            Integer.parseInt(o2.substring(0, o2.lastIndexOf('.')));
+                }
+            }).collect(Collectors.toList());
         }
         return data;
     }
