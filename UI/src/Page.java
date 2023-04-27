@@ -23,7 +23,7 @@ public class Page extends JFrame {
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        ImageIcon icon = new ImageIcon("./icon.png");
+        ImageIcon icon = new ImageIcon("./res/icon.png");
         setIconImage(icon.getImage());
 
         JPanel panel = new JPanel(new GridBagLayout());
@@ -103,7 +103,7 @@ public class Page extends JFrame {
         startEndBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ImageIcon errorIcon = new ImageIcon("./error.png");
+                ImageIcon errorIcon = new ImageIcon("./res/error.png");
                 if (worker != null && !worker.isDone()) {
                     UIManager.put("OptionPane.okButtonText", "OK");
                     JOptionPane.showMessageDialog(null, "Please reopen the programme to restart!", "Notice", JOptionPane.PLAIN_MESSAGE);
