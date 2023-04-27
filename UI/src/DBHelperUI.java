@@ -92,26 +92,10 @@ public class DBHelperUI {
         return data;
     }
 
-    public static void main(String[] args) {
-        DBHelperUI dbh = new DBHelperUI();
-
-        System.out.println("RADF");
-        List<String> allFiles = dbh.readAllDBFiles();
-        System.out.println(allFiles);
-
-        System.out.println("SAVE");
-        System.out.println(dbh.save("test", "test\n  test"));
-
-        System.out.println("LOAD");
-        allFiles = dbh.readAllDBFiles();
-        System.out.println(allFiles);
-        for (String allFile : allFiles) {
-            System.out.println(dbh.load(allFile));
-        }
-
-        System.out.println("REMOVE");
-        for (String allFile : allFiles) {
-            System.out.println(dbh.remove(allFile));
+    public void removeAll() {
+        List<String> files = readAllDBFiles();
+        for (String file : files) {
+            remove(file);
         }
     }
 }

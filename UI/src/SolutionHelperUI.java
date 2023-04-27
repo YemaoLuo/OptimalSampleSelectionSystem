@@ -1,7 +1,27 @@
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.LongAdder;
 
 public class SolutionHelperUI {
+
+    // Validate input
+    public boolean validate(int m, int n, int k, int j, int s) {
+        if (m < 45 || m > 54) {
+            return false;
+        }
+        if (n < 7 || n > 25) {
+            return false;
+        }
+        if (k < 4 || k > 7) {
+            return false;
+        }
+        if (s < 3 || s > 7) {
+            return false;
+        }
+        return j >= Math.min(s, k) && j <= Math.max(s, k);
+    }
 
     // Generate chosen samples
     public List<Integer> generateChosenSamples(int m, int n) {
@@ -41,17 +61,17 @@ public class SolutionHelperUI {
 
 
     // Generate all results need to be covered
-    public List<List<Integer>> generateCoverList(List<Integer> chosenSamples, int j) {
-        List<List<Integer>> result = new ArrayList<>();
+    public List<Set<Integer>> generateCoverList(List<Integer> chosenSamples, int j) {
+        List<Set<Integer>> result = new ArrayList<>();
         List<Integer> temp = new ArrayList<>();
         generateCoverListCombinations(chosenSamples, j, 0, temp, result);
         return result;
     }
 
     private static void generateCoverListCombinations(List<Integer> chosenSamples, int k, int start,
-                                                      List<Integer> temp, List<List<Integer>> result) {
+                                                      List<Integer> temp, List<Set<Integer>> result) {
         if (temp.size() == k) {
-            result.add(new ArrayList<>(temp));
+            result.add(new HashSet<>(temp));
             return;
         }
         for (int i = start; i < chosenSamples.size(); i++) {
@@ -61,69 +81,80 @@ public class SolutionHelperUI {
         }
     }
 
-    public Map<List<Integer>, List<List<Integer>>> generateCoverListMap(List<List<Integer>> coverList, int s) {
-        Map<List<Integer>, List<List<Integer>>> coverListMap = new HashMap<>((int) (coverList.size() / 0.75 + 1));
-        for (List<Integer> integers : coverList) {
-            coverListMap.put(integers, generateCoverList(integers, s));
-        }
-        return coverListMap;
-    }
-
 
     // Generate results using hill-climbing method
-    public void removeCoverListMapKey(List<Integer> candidateResult, Map<List<Integer>, List<List<Integer>>> coverListMap) {
-        coverListMap.remove(candidateResult);
-        Iterator<Map.Entry<List<Integer>, List<List<Integer>>>> iterator = coverListMap.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<List<Integer>, List<List<Integer>>> next = iterator.next();
-            List<List<Integer>> coverList = next.getValue();
-            for (List<Integer> integerList : coverList) {
-                if (candidateResult.containsAll(integerList)) {
-                    iterator.remove();
-                    break;
-                }
-            }
-        }
-    }
-
-    public List<Integer> getCandidateResult(List<List<Integer>> possibleResults, Map<List<Integer>, List<List<Integer>>> coverListMap) {
-        Map<List<Integer>, Integer> countMap = new ConcurrentHashMap<>((int) (possibleResults.size() / 0.75 + 1));
-        possibleResults.parallelStream().forEach(possibleResult -> {
-            coverListMap.entrySet().parallelStream().forEach(next -> {
-                List<List<Integer>> coverList = next.getValue();
-                for (List<Integer> integerList : coverList) {
-                    if (possibleResult.containsAll(integerList)) {
-                        countMap.merge(possibleResult, 1, Integer::sum);
-                        break;
+    public List<Integer> getCandidateResult(List<List<Integer>> possibleResults, List<Set<Integer>> coverList, int s) {
+        ConcurrentHashMap<List<Integer>, Integer> map = new ConcurrentHashMap<>();
+        possibleResults.parallelStream().unordered().forEach((possibleResult -> {
+            LongAdder tempMax = new LongAdder();
+            coverList.parallelStream().unordered().forEach(coverSet -> {
+                int count = 0;
+                for (Integer integer : possibleResult) {
+                    if (coverSet.contains(integer)) {
+                        count++;
                     }
+                }
+                if (count >= s) {
+                    tempMax.increment();
                 }
             });
-        });
-        Optional<Map.Entry<List<Integer>, Integer>> maxEntry = countMap.entrySet()
-                .stream()
-                .max(Map.Entry.comparingByValue());
-        return maxEntry.map(Map.Entry::getKey).orElse(null);
+            map.put(possibleResult, tempMax.intValue());
+        }));
+        return map.entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse(null);
     }
 
-    public List<Integer> getCandidateResultSingleProcess(List<List<Integer>> possibleResults, Map<List<Integer>, List<List<Integer>>> coverListMap) {
-        int maxCover = Integer.MIN_VALUE;
-        List<Integer> candidateResult = new ArrayList<>();
-        for (List<Integer> possibleResult : possibleResults) {
-            int tempMax = 0;
-            for (Map.Entry<List<Integer>, List<List<Integer>>> next : coverListMap.entrySet()) {
-                List<List<Integer>> coverList = next.getValue();
-                for (List<Integer> integerList : coverList) {
-                    if (possibleResult.containsAll(integerList)) {
-                        tempMax++;
-                        break;
+    public List<Integer> getCandidateResultSingleThread(List<List<Integer>> possibleResults, List<Set<Integer>> coverList, int s) {
+        AtomicInteger max = new AtomicInteger(0);
+        AtomicReference<List<Integer>> res = new AtomicReference<>();
+        possibleResults.forEach((possibleResult -> {
+            AtomicInteger tempMax = new AtomicInteger(0);
+            coverList.forEach(coverSet -> {
+                int count = 0;
+                for (Integer integer : possibleResult) {
+                    if (coverSet.contains(integer)) {
+                        count++;
                     }
                 }
+                if (count >= s) {
+                    tempMax.getAndIncrement();
+                }
+            });
+            if (tempMax.get() > max.get()) {
+                max.set(tempMax.get());
+                res.set(possibleResult);
             }
-            if (tempMax > maxCover) {
-                maxCover = tempMax;
-                candidateResult = possibleResult;
+        }));
+        return res.get();
+    }
+
+    public void removeCoveredResults(List<Integer> candidateResult, List<Set<Integer>> coverList, int s) {
+        Iterator<Set<Integer>> iterator = coverList.iterator();
+        while (iterator.hasNext()) {
+            Set<Integer> coverSet = iterator.next();
+            int count = 0;
+            for (Integer integer : candidateResult) {
+                if (coverSet.contains(integer)) {
+                    count++;
+                }
+            }
+            if (count >= s) {
+                iterator.remove();
             }
         }
-        return candidateResult;
+    }
+
+    public List<List<Integer>> getResult(List<List<Integer>> possibleResults, List<Set<Integer>> coverList, int s) {
+        List<List<Integer>> result = new ArrayList<>();
+        double initSize = coverList.size();
+        while (coverList.size() != 0) {
+            System.out.println(String.format("%.2f", (1 - coverList.size() / initSize) * 100) + "%");
+            List<Integer> candidateResult = getCandidateResult(possibleResults, coverList, s);
+            removeCoveredResults(candidateResult, coverList, s);
+            result.add(candidateResult);
+        }
+        return result;
     }
 }

@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 public class Page extends JFrame {
     private JLabel label1, label2, label3, label4, label5;
@@ -16,6 +16,7 @@ public class Page extends JFrame {
     private JLabel progressLabel;
     private MySwingWorker worker;
     private DBHelperUI dbh = new DBHelperUI();
+    private SolutionHelperUI sh = new SolutionHelperUI();
 
     public Page() {
         setTitle("Optimize Samples System");
@@ -102,10 +103,35 @@ public class Page extends JFrame {
         startEndBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                ImageIcon errorIcon = new ImageIcon("./error.png");
                 if (worker != null && !worker.isDone()) {
                     UIManager.put("OptionPane.okButtonText", "OK");
                     JOptionPane.showMessageDialog(null, "Please reopen the programme to restart!", "Notice", JOptionPane.PLAIN_MESSAGE);
                     System.exit(0);
+                    return;
+                }
+                try {
+                    int m = Integer.parseInt(textField1.getText());
+                    int n = Integer.parseInt(textField2.getText());
+                    int k = Integer.parseInt(textField3.getText());
+                    int j = Integer.parseInt(textField4.getText());
+                    int s = Integer.parseInt(textField5.getText());
+                    if (!sh.validate(m, n, k, j, s)) {
+                        UIManager.put("OptionPane.okButtonText", "OK");
+                        JOptionPane.showMessageDialog(null, "Input invalid! \n \n" +
+                                "m is within the range of [45, 54]\n" +
+                                "n is within the range of [7, 25]\n" +
+                                "k is within the range of [4, 7]\n" +
+                                "s is within the range of [3, 7]\n" +
+                                "j is between the minimum value of s and k", "Error", JOptionPane.ERROR_MESSAGE, errorIcon);
+                        return;
+                    }
+                } catch (Exception ex) {
+                    UIManager.put("OptionPane.okButtonText", "OK");
+                    JOptionPane.showMessageDialog(null, "Input invalid! \n" +
+                            "m is within the range of [45, 54], n is within the range of [7, 25]\n" +
+                            "k is within the range of [4, 7], s is within the range of [3, 7]\n" +
+                            "j is between the minimum value of s and k.", "Error", JOptionPane.ERROR_MESSAGE, errorIcon);
                     return;
                 }
                 worker = new MySwingWorker();
@@ -171,7 +197,19 @@ public class Page extends JFrame {
                         panel.setVisible(true);
                     }
                 });
-                historyPanel.add(back, BorderLayout.SOUTH);
+                JButton removeAll = new JButton("Remove All");
+                removeAll.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        dbh.removeAll();
+                        contentPanel.removeAll();
+                        contentPanel.revalidate();
+                    }
+                });
+                JPanel buttonPanel = new JPanel();
+                buttonPanel.add(back);
+                buttonPanel.add(removeAll);
+                historyPanel.add(buttonPanel, BorderLayout.SOUTH);
                 add(historyPanel, BorderLayout.CENTER);
                 historyPanel.setVisible(true);
             }
@@ -208,6 +246,7 @@ public class Page extends JFrame {
     class MySwingWorker extends SwingWorker<List<List<Integer>>, Integer> {
         @Override
         protected List<List<Integer>> doInBackground() {
+
             textArea.setText("Starting");
             progressLabel.setText("Progress: 0%");
             progressBar.setValue(0);
@@ -219,31 +258,29 @@ public class Page extends JFrame {
             int j = Integer.parseInt(textField4.getText());
             int s = Integer.parseInt(textField5.getText());
 
-            SolutionHelperUI sh = new SolutionHelperUI();
             long startTime = System.currentTimeMillis();
             List<Integer> chosenSamples = sh.generateChosenSamples(m, n);
             List<List<Integer>> possibleResults = sh.generatePossibleResults(chosenSamples, k);
-            List<List<Integer>> coverList = sh.generateCoverList(chosenSamples, j);
-            Map<List<Integer>, List<List<Integer>>> coverListMap = sh.generateCoverListMap(coverList, s);
+            List<Set<Integer>> coverList = sh.generateCoverList(chosenSamples, j);
 
-            double initSize = coverListMap.size();
-            if (n <= 10) {
-                while (!coverListMap.isEmpty()) {
-                    List<Integer> candidateResult = sh.getCandidateResultSingleProcess(possibleResults, coverListMap);
+            double initSize = coverList.size();
+            if (n <= 12) {
+                while (!coverList.isEmpty()) {
+                    List<Integer> candidateResult = sh.getCandidateResultSingleThread(possibleResults, coverList, s);
                     result.add(candidateResult);
-                    sh.removeCoverListMapKey(candidateResult, coverListMap);
+                    sh.removeCoveredResults(candidateResult, coverList, s);
                     possibleResults.remove(candidateResult);
-                    double percent = (1 - coverListMap.size() / initSize) * 100;
+                    double percent = (1 - coverList.size() / initSize) * 100;
                     publish((int) percent);
                     setProgress((int) percent);
                 }
             } else {
-                while (!coverListMap.isEmpty()) {
-                    List<Integer> candidateResult = sh.getCandidateResult(possibleResults, coverListMap);
+                while (!coverList.isEmpty()) {
+                    List<Integer> candidateResult = sh.getCandidateResult(possibleResults, coverList, s);
                     result.add(candidateResult);
-                    sh.removeCoverListMapKey(candidateResult, coverListMap);
+                    sh.removeCoveredResults(candidateResult, coverList, s);
                     possibleResults.remove(candidateResult);
-                    double percent = (1 - coverListMap.size() / initSize) * 100;
+                    double percent = (1 - coverList.size() / initSize) * 100;
                     publish((int) percent);
                     setProgress((int) percent);
                 }
