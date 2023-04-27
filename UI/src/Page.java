@@ -101,7 +101,8 @@ public class Page extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (worker != null && !worker.isDone()) {
-                    worker.cancel(true);
+                    JOptionPane.showMessageDialog(null, "Please reopen the programme to restart!", "Notice", JOptionPane.PLAIN_MESSAGE);
+                    System.exit(0);
                     return;
                 }
                 worker = new MySwingWorker();
@@ -161,9 +162,6 @@ public class Page extends JFrame {
             double initSize = coverListMap.size();
             if (n <= 10) {
                 while (!coverListMap.isEmpty()) {
-                    if (isCancelled()) {
-                        return null;
-                    }
                     List<Integer> candidateResult = sh.getCandidateResultSingleProcess(possibleResults, coverListMap);
                     result.add(candidateResult);
                     sh.removeCoverListMapKey(candidateResult, coverListMap);
@@ -174,9 +172,6 @@ public class Page extends JFrame {
                 }
             } else {
                 while (!coverListMap.isEmpty()) {
-                    if (isCancelled()) {
-                        return null;
-                    }
                     List<Integer> candidateResult = sh.getCandidateResult(possibleResults, coverListMap);
                     result.add(candidateResult);
                     sh.removeCoverListMapKey(candidateResult, coverListMap);
@@ -202,25 +197,15 @@ public class Page extends JFrame {
 
         @Override
         protected void process(List<Integer> chunks) {
-            if (!isCancelled()) {
-                int value = chunks.get(chunks.size() - 1);
-                progressBar.setValue(value);
-                progressLabel.setText("Progress: " + value + "%");
-            } else {
-                textArea.setText("Cancelled");
-            }
+            int value = chunks.get(chunks.size() - 1);
+            progressBar.setValue(value);
+            progressLabel.setText("Progress: " + value + "%");
         }
 
         @Override
         protected void done() {
-            if (isCancelled()) {
-                textArea.setText("Cancelling");
-                progressBar.setValue(0);
-                progressLabel.setText("Progress: 0%");
-            } else {
-                progressBar.setValue(100);
-                progressLabel.setText("Progress: 100%");
-            }
+            progressBar.setValue(100);
+            progressLabel.setText("Progress: 100%");
         }
     }
 
