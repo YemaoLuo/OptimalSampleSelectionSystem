@@ -20,7 +20,7 @@ public class Page extends JFrame {
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        ImageIcon icon = new ImageIcon("res/icon.png");
+        ImageIcon icon = new ImageIcon("UI/res/icon.png");
         setIconImage(icon.getImage());
 
         JPanel panel = new JPanel(new GridBagLayout());
