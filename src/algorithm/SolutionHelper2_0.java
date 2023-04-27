@@ -69,9 +69,9 @@ public class SolutionHelper2_0 {
     public List<Integer> getCandidateResult(List<List<Integer>> possibleResults, List<Set<Integer>> coverList, int s) {
         AtomicInteger max = new AtomicInteger(0);
         AtomicReference<List<Integer>> res = new AtomicReference<>();
-        possibleResults.parallelStream().forEach((possibleResult -> {
+        possibleResults.parallelStream().unordered().forEach((possibleResult -> {
             AtomicInteger tempMax = new AtomicInteger(0);
-            coverList.parallelStream().forEach(coverSet -> {
+            coverList.parallelStream().unordered().forEach(coverSet -> {
                 int count = 0;
                 for (Integer integer : possibleResult) {
                     if (coverSet.contains(integer)) {
