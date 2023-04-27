@@ -1,10 +1,10 @@
-package algorithm;
+package experiment;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class SolutionHelper2_0 {
+public class SolutionHelper2_0_ex {
 
     // Validate input
     public boolean validate(int m, int n, int k, int j, int s) {
@@ -153,6 +153,18 @@ public class SolutionHelper2_0 {
         while (coverList.size() != 0) {
             System.out.println(String.format("%.2f", (1 - coverList.size() / initSize) * 100) + "%");
             List<Integer> candidateResult = getCandidateResult(possibleResults, coverList, s);
+            removeCoveredResults(candidateResult, coverList, s);
+            result.add(candidateResult);
+        }
+        return result;
+    }
+
+    public List<List<Integer>> getResultSingleThread(List<List<Integer>> possibleResults, List<Set<Integer>> coverList, int s) {
+        List<List<Integer>> result = new ArrayList<>();
+        double initSize = coverList.size();
+        while (coverList.size() != 0) {
+            System.out.println(String.format("%.2f", (1 - coverList.size() / initSize) * 100) + "%");
+            List<Integer> candidateResult = getCandidateResultSingleThread(possibleResults, coverList, s);
             removeCoveredResults(candidateResult, coverList, s);
             result.add(candidateResult);
         }
