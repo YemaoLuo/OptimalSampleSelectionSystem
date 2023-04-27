@@ -4,6 +4,23 @@ import java.util.*;
 
 public class SolutionHelper {
 
+    // Validate input
+    public boolean validate(int m, int n, int k, int j, int s) {
+        if (m < 45 || m > 54) {
+            return false;
+        }
+        if (n < 7 || n > 25) {
+            return false;
+        }
+        if (k < 4 || k > 7) {
+            return false;
+        }
+        if (s < 3 || s > 7) {
+            return false;
+        }
+        return j >= Math.min(s, k) && j <= Math.max(s, k);
+    }
+
     // Generate chosen samples
     public List<Integer> generateChosenSamples(int m, int n) {
         List<Integer> chosenSamples = new ArrayList<>();
