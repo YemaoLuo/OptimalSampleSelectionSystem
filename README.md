@@ -53,3 +53,6 @@
 > > > Reduced half of time cost when n is large
 > >
 > > > v1_1 add multi thread to read possibleResults
+>
+> > v2.0 get rid or the map and use the number of cases satisfy to judge
+> > > Reduced tremendous time cost!!!
