@@ -1,5 +1,3 @@
-package ui;
-
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -107,24 +105,25 @@ public class SolutionHelperUI {
         return maxEntry.map(Map.Entry::getKey).orElse(null);
     }
 
-    public List<List<Integer>> getResult(List<List<Integer>> possibleResults, Map<List<Integer>, List<List<Integer>>> coverListMap) {
-        List<List<Integer>> result = new ArrayList<>();
-        double initSize = coverListMap.size();
-        long removeCoverListMapKeyTime = 0, getCandidateResultTime = 0;
-        while (!coverListMap.isEmpty()) {
-            long startTime = System.currentTimeMillis();
-            System.out.println(String.format("%.2f", (1 - coverListMap.size() / initSize) * 100) + "%");
-            List<Integer> candidateResult = getCandidateResult(possibleResults, coverListMap);
-            getCandidateResultTime += System.currentTimeMillis() - startTime;
-            startTime = System.currentTimeMillis();
-            result.add(candidateResult);
-            removeCoverListMapKey(candidateResult, coverListMap);
-            possibleResults.remove(candidateResult);
-            removeCoverListMapKeyTime += System.currentTimeMillis() - startTime;
+    public List<Integer> getCandidateResultSingleProcess(List<List<Integer>> possibleResults, Map<List<Integer>, List<List<Integer>>> coverListMap) {
+        int maxCover = Integer.MIN_VALUE;
+        List<Integer> candidateResult = new ArrayList<>();
+        for (List<Integer> possibleResult : possibleResults) {
+            int tempMax = 0;
+            for (Map.Entry<List<Integer>, List<List<Integer>>> next : coverListMap.entrySet()) {
+                List<List<Integer>> coverList = next.getValue();
+                for (List<Integer> integerList : coverList) {
+                    if (possibleResult.containsAll(integerList)) {
+                        tempMax++;
+                        break;
+                    }
+                }
+            }
+            if (tempMax > maxCover) {
+                maxCover = tempMax;
+                candidateResult = possibleResult;
+            }
         }
-        System.out.println("Remove cover list time: " + removeCoverListMapKeyTime + " ms");
-        System.out.println("Get candidate result time: " + getCandidateResultTime + " ms");
-        System.out.println("=========================================");
-        return result;
+        return candidateResult;
     }
 }

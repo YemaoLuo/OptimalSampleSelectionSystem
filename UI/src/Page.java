@@ -1,5 +1,3 @@
-package ui;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -21,6 +19,9 @@ public class Page extends JFrame {
         setTitle("Optimize Samples System");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        ImageIcon icon = new ImageIcon("res/icon.png");
+        setIconImage(icon.getImage());
 
         JPanel panel = new JPanel(new GridBagLayout());
 
@@ -152,23 +153,38 @@ public class Page extends JFrame {
 
             SolutionHelperUI sh = new SolutionHelperUI();
             long startTime = System.currentTimeMillis();
-            java.util.List<Integer> chosenSamples = sh.generateChosenSamples(m, n);
-            java.util.List<java.util.List<Integer>> possibleResults = sh.generatePossibleResults(chosenSamples, k);
-            java.util.List<java.util.List<Integer>> coverList = sh.generateCoverList(chosenSamples, j);
-            Map<java.util.List<Integer>, java.util.List<java.util.List<Integer>>> coverListMap = sh.generateCoverListMap(coverList, s);
+            List<Integer> chosenSamples = sh.generateChosenSamples(m, n);
+            List<List<Integer>> possibleResults = sh.generatePossibleResults(chosenSamples, k);
+            List<List<Integer>> coverList = sh.generateCoverList(chosenSamples, j);
+            Map<List<Integer>, List<List<Integer>>> coverListMap = sh.generateCoverListMap(coverList, s);
 
             double initSize = coverListMap.size();
-            while (!coverListMap.isEmpty()) {
-                if (isCancelled()) {
-                    return null;
+            if (n <= 10) {
+                while (!coverListMap.isEmpty()) {
+                    if (isCancelled()) {
+                        return null;
+                    }
+                    List<Integer> candidateResult = sh.getCandidateResultSingleProcess(possibleResults, coverListMap);
+                    result.add(candidateResult);
+                    sh.removeCoverListMapKey(candidateResult, coverListMap);
+                    possibleResults.remove(candidateResult);
+                    double percent = (1 - coverListMap.size() / initSize) * 100;
+                    publish((int) percent);
+                    setProgress((int) percent);
                 }
-                List<Integer> candidateResult = sh.getCandidateResult(possibleResults, coverListMap);
-                result.add(candidateResult);
-                sh.removeCoverListMapKey(candidateResult, coverListMap);
-                possibleResults.remove(candidateResult);
-                double percent = (1 - coverListMap.size() / initSize) * 100;
-                publish((int) percent);
-                setProgress((int) percent);
+            } else {
+                while (!coverListMap.isEmpty()) {
+                    if (isCancelled()) {
+                        return null;
+                    }
+                    List<Integer> candidateResult = sh.getCandidateResult(possibleResults, coverListMap);
+                    result.add(candidateResult);
+                    sh.removeCoverListMapKey(candidateResult, coverListMap);
+                    possibleResults.remove(candidateResult);
+                    double percent = (1 - coverListMap.size() / initSize) * 100;
+                    publish((int) percent);
+                    setProgress((int) percent);
+                }
             }
 
             String resultStr = "";
@@ -198,15 +214,12 @@ public class Page extends JFrame {
         @Override
         protected void done() {
             if (isCancelled()) {
-                textArea.setText("Cancelling please wait for the programe to stop");
+                textArea.setText("Cancelling");
                 progressBar.setValue(0);
                 progressLabel.setText("Progress: 0%");
             } else {
-                try {
-                    List<List<Integer>> result = get();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
+                progressBar.setValue(100);
+                progressLabel.setText("Progress: 100%");
             }
         }
     }
