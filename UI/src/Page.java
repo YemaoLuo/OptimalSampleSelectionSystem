@@ -101,6 +101,7 @@ public class Page extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (worker != null && !worker.isDone()) {
+                    UIManager.put("OptionPane.okButtonText", "OK");
                     JOptionPane.showMessageDialog(null, "Please reopen the programme to restart!", "Notice", JOptionPane.PLAIN_MESSAGE);
                     System.exit(0);
                     return;
