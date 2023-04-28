@@ -101,7 +101,6 @@ public class DBHelperUI {
                 FileInputStream fis = new FileInputStream("./db/cache.db");
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 HashMap<String, Date> cache = (HashMap<String, Date>) ois.readObject();
-                System.out.println(cache);
                 data = Arrays.stream(files).map(File::getName).collect(Collectors.toList());
                 data = data.stream().sorted(new Comparator<String>() {
                     @Override
