@@ -1,8 +1,5 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class DBHelperUI {
@@ -22,7 +19,16 @@ public class DBHelperUI {
                 BufferedWriter bw = new BufferedWriter(fw);
                 bw.write(data);
                 bw.close();
-            } catch (IOException e) {
+                FileInputStream fis = new FileInputStream("./db/cache.db");
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                HashMap<String, Date> cache = (HashMap<String, Date>) ois.readObject();
+                cache.put(fileName + "-" + count + ".data", new Date());
+                FileOutputStream fos = new FileOutputStream("./db/cache.db");
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                oos.writeObject(cache);
+                oos.close();
+                fos.close();
+            } catch (Exception e) {
                 return false;
             }
         }
@@ -60,11 +66,23 @@ public class DBHelperUI {
     }
 
     public boolean loadDB() {
-        File folder = new File("./db");
-        if (!folder.exists()) {
-            return folder.mkdirs();
-        } else {
+        try {
+            File folder = new File("./db");
+            if (!folder.exists()) {
+                folder.mkdirs();
+            }
+            File file = new File("./db/cache.db");
+            if (!file.exists()) {
+                HashMap<String, Date> storage = new HashMap<>();
+                FileOutputStream fos = new FileOutputStream("./db/cache.db");
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                oos.writeObject(storage);
+                oos.close();
+                fos.close();
+            }
             return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 
@@ -79,15 +97,30 @@ public class DBHelperUI {
             };
             File[] files = folder.listFiles(filter);
             assert files != null;
-            data = Arrays.stream(files).map(File::getName).sorted(new Comparator<String>() {
-                @Override
-                public int compare(String o1, String o2) {
-                    o1 = o1.replace("-", "");
-                    o2 = o2.replace("-", "");
-                    return Integer.parseInt(o1.substring(0, o1.lastIndexOf('.'))) -
-                            Integer.parseInt(o2.substring(0, o2.lastIndexOf('.')));
-                }
-            }).collect(Collectors.toList());
+            try {
+                FileInputStream fis = new FileInputStream("./db/cache.db");
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                HashMap<String, Date> cache = (HashMap<String, Date>) ois.readObject();
+                System.out.println(cache);
+                data = Arrays.stream(files).map(File::getName).collect(Collectors.toList());
+                data = data.stream().sorted(new Comparator<String>() {
+                    @Override
+                    public int compare(String o1, String o2) {
+                        return cache.getOrDefault(o2, new Date()).compareTo(cache.getOrDefault(o1, new Date()));
+                    }
+                }).collect(Collectors.toList());
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                data = Arrays.stream(files).map(File::getName).sorted(new Comparator<String>() {
+                    @Override
+                    public int compare(String o1, String o2) {
+                        o1 = o1.replace("-", "");
+                        o2 = o2.replace("-", "");
+                        return Integer.parseInt(o1.substring(0, o1.lastIndexOf('.'))) -
+                                Integer.parseInt(o2.substring(0, o2.lastIndexOf('.')));
+                    }
+                }).collect(Collectors.toList());
+            }
         }
         return data;
     }
