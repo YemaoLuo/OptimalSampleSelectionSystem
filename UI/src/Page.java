@@ -280,7 +280,7 @@ public class Page extends JFrame {
         @Override
         protected List<List<Integer>> doInBackground() {
 
-            textArea.setText("Starting");
+            textArea.setText("Starting...Please wait...");
             progressLabel.setText("Progress: 0%");
             progressBar.setValue(0);
 
