@@ -23,6 +23,7 @@ public class Page extends JFrame {
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        setResizable(false);
         ImageIcon icon = new ImageIcon("./res/icon.png");
         setIconImage(icon.getImage());
 
