@@ -158,8 +158,15 @@ public class Page extends JFrame {
                 historyPanel.setLayout(new BorderLayout());
                 JScrollPane scrollPanel = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
                 scrollPanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 5, true));
-                JPanel contentPanel = new JPanel();
-                contentPanel.setLayout(new GridLayout(files.size(), 3, 10, 10));
+                GridBagLayout layout = new GridBagLayout();
+                JPanel contentPanel = new JPanel(layout);
+                GridBagConstraints gbc = new GridBagConstraints();
+                gbc.fill = GridBagConstraints.HORIZONTAL;
+                gbc.weightx = 1.0;
+                gbc.weighty = 0.0;
+                gbc.insets = new Insets(10, 10, 10, 10);
+                gbc.gridx = 0;
+                gbc.gridy = 0;
                 for (String file : files) {
                     JPanel rowPanel = new JPanel();
                     rowPanel.setLayout(new GridLayout(1, 3, 10, 10));
@@ -179,22 +186,26 @@ public class Page extends JFrame {
                     remove.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            dbh.remove(file);
-                            contentPanel.remove(rowPanel);
-                            contentPanel.revalidate();
+                            Object[] options = {"Yes", "No"};
+                            int result = JOptionPane.showOptionDialog(null, "Confirm to remove this history data?", "Confirm",
+                                    JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Yes");
+                            if (result == JOptionPane.YES_OPTION) {
+                                dbh.remove(file);
+                                historyPanel.setVisible(false);
+                                panel.setVisible(true);
+                                historyBtn.doClick();
+                            }
                         }
                     });
                     rowPanel.add(remove);
-                    contentPanel.add(rowPanel);
+                    gbc.gridy++;
+                    contentPanel.add(rowPanel, gbc);
                 }
                 if (files.size() == 0) {
-                    JLabel front = new JLabel();
                     JLabel emptyLabel = new JLabel("No history data!", SwingConstants.CENTER);
                     emptyLabel.setFont(new Font("Arial", Font.PLAIN, 20));
-                    JLabel end = new JLabel();
-                    contentPanel.add(front);
-                    contentPanel.add(emptyLabel);
-                    contentPanel.add(end);
+                    gbc.gridy++;
+                    contentPanel.add(emptyLabel, gbc);
                 }
                 scrollPanel.setViewportView(contentPanel);
                 historyPanel.add(scrollPanel, BorderLayout.CENTER);
@@ -210,9 +221,16 @@ public class Page extends JFrame {
                 removeAll.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        dbh.removeAll();
-                        contentPanel.removeAll();
-                        contentPanel.revalidate();
+                        Object[] options = {"Yes", "No"};
+                        int result = JOptionPane.showOptionDialog(null, "Confirm to remove all history data?", "Confirm",
+                                JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Yes");
+                        if (result == JOptionPane.YES_OPTION) {
+                            dbh.removeAll();
+                            contentPanel.removeAll();
+                            contentPanel.revalidate();
+                            historyPanel.setVisible(false);
+                            panel.setVisible(true);
+                        }
                     }
                 });
                 JPanel buttonPanel = new JPanel();
