@@ -110,9 +110,16 @@ public class Page extends JFrame {
                     int result = JOptionPane.showOptionDialog(null, "Running in progress. Sure to end?", "Confirm",
                             JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Yes");
                     if (result == JOptionPane.YES_OPTION) {
-                        UIManager.put("OptionPane.okButtonText", "OK");
-                        JOptionPane.showMessageDialog(null, "Please reopen the programme to restart!", "Notice", JOptionPane.PLAIN_MESSAGE);
-                        System.exit(0);
+                        try {
+                            UIManager.put("OptionPane.okButtonText", "OK");
+                            JOptionPane.showMessageDialog(null, "The programme will close and restart immediately. If fails, please restart it manually.", "Notice", JOptionPane.INFORMATION_MESSAGE, null);
+                            String currentPath = System.getProperty("user.dir");
+                            Runtime.getRuntime().exec("taskkill /f /im " + currentPath + "\\OSSS.exe");
+                            Runtime.getRuntime().exec(currentPath + "\\OSSS.exe");
+                        } catch (Exception ex) {
+                        } finally {
+                            System.exit(0);
+                        }
                     }
                     return;
                 }
