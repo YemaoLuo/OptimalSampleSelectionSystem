@@ -19,7 +19,7 @@ public class Page extends JFrame {
     private SolutionHelperUI sh = new SolutionHelperUI();
 
     public Page() {
-        setTitle("Optimize Samples System");
+        setTitle("Optimal Sample Selection System");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -190,6 +190,7 @@ public class Page extends JFrame {
                 if (files.size() == 0) {
                     JLabel front = new JLabel();
                     JLabel emptyLabel = new JLabel("No history data!", SwingConstants.CENTER);
+                    emptyLabel.setFont(new Font("Arial", Font.PLAIN, 20));
                     JLabel end = new JLabel();
                     contentPanel.add(front);
                     contentPanel.add(emptyLabel);
