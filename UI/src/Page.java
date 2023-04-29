@@ -106,9 +106,14 @@ public class Page extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 ImageIcon errorIcon = new ImageIcon("./res/error.png");
                 if (worker != null && !worker.isDone()) {
-                    UIManager.put("OptionPane.okButtonText", "OK");
-                    JOptionPane.showMessageDialog(null, "Please reopen the programme to restart!", "Notice", JOptionPane.PLAIN_MESSAGE);
-                    System.exit(0);
+                    Object[] options = {"Yes", "No"};
+                    int result = JOptionPane.showOptionDialog(null, "Running in progress. Sure to end?", "Confirm",
+                            JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Yes");
+                    if (result == JOptionPane.YES_OPTION) {
+                        UIManager.put("OptionPane.okButtonText", "OK");
+                        JOptionPane.showMessageDialog(null, "Please reopen the programme to restart!", "Notice", JOptionPane.PLAIN_MESSAGE);
+                        System.exit(0);
+                    }
                     return;
                 }
                 try {
