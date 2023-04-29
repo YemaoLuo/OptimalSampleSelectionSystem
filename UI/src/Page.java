@@ -157,7 +157,7 @@ public class Page extends JFrame {
                 JPanel historyPanel = new JPanel();
                 historyPanel.setLayout(new BorderLayout());
                 JScrollPane scrollPanel = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-                scrollPanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 5, true)); // 设置边框样式
+                scrollPanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 5, true));
                 JPanel contentPanel = new JPanel();
                 contentPanel.setLayout(new GridLayout(files.size(), 3, 10, 10));
                 for (String file : files) {
@@ -186,6 +186,14 @@ public class Page extends JFrame {
                     });
                     rowPanel.add(remove);
                     contentPanel.add(rowPanel);
+                }
+                if (files.size() == 0) {
+                    JLabel front = new JLabel();
+                    JLabel emptyLabel = new JLabel("No history data!", SwingConstants.CENTER);
+                    JLabel end = new JLabel();
+                    contentPanel.add(front);
+                    contentPanel.add(emptyLabel);
+                    contentPanel.add(end);
                 }
                 scrollPanel.setViewportView(contentPanel);
                 historyPanel.add(scrollPanel, BorderLayout.CENTER);
