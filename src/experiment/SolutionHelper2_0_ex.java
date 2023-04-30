@@ -1,8 +1,10 @@
 package experiment;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.LongAdder;
 
 public class SolutionHelper2_0_ex {
 
@@ -84,10 +86,9 @@ public class SolutionHelper2_0_ex {
 
     // Generate results using hill-climbing method
     public List<Integer> getCandidateResult(List<List<Integer>> possibleResults, List<Set<Integer>> coverList, int s) {
-        AtomicInteger max = new AtomicInteger(0);
-        AtomicReference<List<Integer>> res = new AtomicReference<>();
+        ConcurrentHashMap<List<Integer>, Integer> map = new ConcurrentHashMap<>();
         possibleResults.parallelStream().unordered().forEach((possibleResult -> {
-            AtomicInteger tempMax = new AtomicInteger(0);
+            LongAdder tempMax = new LongAdder();
             coverList.parallelStream().unordered().forEach(coverSet -> {
                 int count = 0;
                 for (Integer integer : possibleResult) {
@@ -96,15 +97,15 @@ public class SolutionHelper2_0_ex {
                     }
                 }
                 if (count >= s) {
-                    tempMax.getAndIncrement();
+                    tempMax.increment();
                 }
             });
-            if (tempMax.get() > max.get()) {
-                max.set(tempMax.get());
-                res.set(possibleResult);
-            }
+            map.put(possibleResult, tempMax.intValue());
         }));
-        return res.get();
+        return map.entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse(null);
     }
 
     public List<Integer> getCandidateResultSingleThread(List<List<Integer>> possibleResults, List<Set<Integer>> coverList, int s) {
@@ -149,22 +150,10 @@ public class SolutionHelper2_0_ex {
 
     public List<List<Integer>> getResult(List<List<Integer>> possibleResults, List<Set<Integer>> coverList, int s) {
         List<List<Integer>> result = new ArrayList<>();
-        double initSize = coverList.size();
+//        double initSize = coverList.size();
         while (coverList.size() != 0) {
-            System.out.println(String.format("%.2f", (1 - coverList.size() / initSize) * 100) + "%");
+            //System.out.println(String.format("%.2f", (1 - coverList.size() / initSize) * 100) + "%");
             List<Integer> candidateResult = getCandidateResult(possibleResults, coverList, s);
-            removeCoveredResults(candidateResult, coverList, s);
-            result.add(candidateResult);
-        }
-        return result;
-    }
-
-    public List<List<Integer>> getResultSingleThread(List<List<Integer>> possibleResults, List<Set<Integer>> coverList, int s) {
-        List<List<Integer>> result = new ArrayList<>();
-        double initSize = coverList.size();
-        while (coverList.size() != 0) {
-            System.out.println(String.format("%.2f", (1 - coverList.size() / initSize) * 100) + "%");
-            List<Integer> candidateResult = getCandidateResultSingleThread(possibleResults, coverList, s);
             removeCoveredResults(candidateResult, coverList, s);
             result.add(candidateResult);
         }
