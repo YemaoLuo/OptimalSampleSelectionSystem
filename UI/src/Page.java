@@ -35,7 +35,7 @@ public class Page extends JFrame {
         c.insets = new Insets(10, 10, 0, 10);
         c.gridx = 0;
         c.gridy = 0;
-        label1 = new JLabel("m：");
+        label1 = new JLabel("m：[45, 54]");
         panel.add(label1, c);
 
         c.gridx = 1;
@@ -45,7 +45,7 @@ public class Page extends JFrame {
 
         c.gridx = 0;
         c.gridy = 1;
-        label2 = new JLabel("n：");
+        label2 = new JLabel("n： [7, 25]");
         panel.add(label2, c);
 
         c.gridx = 1;
@@ -55,7 +55,7 @@ public class Page extends JFrame {
 
         c.gridx = 0;
         c.gridy = 2;
-        label3 = new JLabel("k：");
+        label3 = new JLabel("k： [4, 7]");
         panel.add(label3, c);
 
         c.gridx = 1;
@@ -65,7 +65,7 @@ public class Page extends JFrame {
 
         c.gridx = 0;
         c.gridy = 3;
-        label4 = new JLabel("j：");
+        label4 = new JLabel("j：  [s, k]");
         panel.add(label4, c);
 
         c.gridx = 1;
@@ -75,7 +75,7 @@ public class Page extends JFrame {
 
         c.gridx = 0;
         c.gridy = 4;
-        label5 = new JLabel("s：");
+        label5 = new JLabel("s： [3, 7]");
         panel.add(label5, c);
 
         c.gridx = 1;
