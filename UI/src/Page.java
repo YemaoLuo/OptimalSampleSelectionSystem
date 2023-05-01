@@ -52,7 +52,7 @@ public class Page extends JFrame {
         c.insets = new Insets(10, 10, 0, 10);
         c.gridx = 0;
         c.gridy = 0;
-        label1 = new JLabel("m:[45,54]");
+        label1 = new JLabel("m: 45 ≤m≤ 54");
         label1.setFont(new Font("Arial", Font.BOLD, 24));
         label1.setForeground(Color.WHITE);
         panel.add(label1, c);
@@ -70,7 +70,7 @@ public class Page extends JFrame {
 
         c.gridx = 0;
         c.gridy = 1;
-        label2 = new JLabel("n:[7,25]");
+        label2 = new JLabel("n:   7  ≤n≤  25 ");
         label2.setFont(new Font("Arial", Font.BOLD, 24));
         label2.setForeground(Color.WHITE);
         panel.add(label2, c);
@@ -88,7 +88,7 @@ public class Page extends JFrame {
 
         c.gridx = 0;
         c.gridy = 2;
-        label3 = new JLabel("k:[4,7]");
+        label3 = new JLabel("k:   4   ≤k≤   7");
         label3.setFont(new Font("Arial", Font.BOLD, 24));
         label3.setForeground(Color.WHITE);
         panel.add(label3, c);
@@ -106,7 +106,7 @@ public class Page extends JFrame {
 
         c.gridx = 0;
         c.gridy = 3;
-        label4 = new JLabel("j:[3,k]");
+        label4 = new JLabel("j:    3   ≤j≤    k");
         label4.setFont(new Font("Arial", Font.BOLD, 24));
         label4.setForeground(Color.WHITE);
         panel.add(label4, c);
@@ -124,7 +124,7 @@ public class Page extends JFrame {
 
         c.gridx = 0;
         c.gridy = 4;
-        label5 = new JLabel("s:[3,j]");
+        label5 = new JLabel("s:   3   ≤s≤    j");
         label5.setFont(new Font("Arial", Font.BOLD, 24));
         label5.setForeground(Color.WHITE);
         panel.add(label5, c);
@@ -157,7 +157,7 @@ public class Page extends JFrame {
         textArea.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panel.add(new JScrollPane(textArea), c);
 
-        c.fill = GridBagConstraints.HORIZONTAL;
+        c.fill = GridBagConstraints.CENTER;
         c.gridx = 0;
         c.gridy = 7;
         c.gridwidth = 1;
@@ -168,7 +168,7 @@ public class Page extends JFrame {
             {
                 // Set the button's appearance and behavior
                 setContentAreaFilled(false);
-                setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+                setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
                 setForeground(Color.WHITE);
                 setFont(new Font("Arial", Font.BOLD, 14));
                 setFocusPainted(false);
@@ -178,7 +178,7 @@ public class Page extends JFrame {
             protected void paintComponent(Graphics g) {
                 Graphics2D g2d = (Graphics2D) g.create();
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                int width = getWidth();
+                int width = 80;
                 int height = getHeight();
                 GradientPaint gradient = new GradientPaint(0, 0, new Color(75, 186, 105),
                         0, height, new Color(0, 129, 69));
@@ -240,7 +240,7 @@ public class Page extends JFrame {
         });
         panel.add(startEndBtn, c);
 
-        c.fill = GridBagConstraints.HORIZONTAL;
+        c.fill = GridBagConstraints.CENTER;
         c.gridx = 1;
         c.gridy = 7;
         c.gridwidth = 1;
@@ -251,7 +251,7 @@ public class Page extends JFrame {
             {
                 // Set the button's appearance and behavior
                 setContentAreaFilled(false);
-                setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+                setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
                 setForeground(Color.WHITE);
                 setFont(new Font("Arial", Font.BOLD, 14));
                 setFocusPainted(false);
@@ -262,7 +262,7 @@ public class Page extends JFrame {
             protected void paintComponent(Graphics g) {
                 Graphics2D g2d = (Graphics2D) g.create();
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                int width = getWidth();
+                int width = 70;
                 int height = getHeight();
                 GradientPaint gradient = new GradientPaint(0, 0, new Color(135, 206, 250),
                         0, height, new Color(0, 191, 255));
@@ -285,7 +285,7 @@ public class Page extends JFrame {
                 GridBagLayout layout = new GridBagLayout();
                 JPanel contentPanel = new JPanel(layout);
                 GridBagConstraints gbc = new GridBagConstraints();
-                gbc.fill = GridBagConstraints.HORIZONTAL;
+                gbc.fill = GridBagConstraints.VERTICAL;
                 gbc.weightx = 1.0;
                 gbc.weighty = 0.0;
                 gbc.insets = new Insets(10, 10, 10, 10);
@@ -296,7 +296,31 @@ public class Page extends JFrame {
                     rowPanel.setLayout(new GridLayout(1, 3, 10, 10));
                     JLabel fileLabel = new JLabel(file);
                     rowPanel.add(fileLabel);
-                    JButton check = new JButton("Check");
+                    JButton check = new JButton("Detail"){
+                        {
+                            // Set the button's appearance and behavior
+                            setContentAreaFilled(false);
+                            setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+                            setForeground(Color.WHITE);
+                            setFont(new Font("Arial", Font.BOLD, 14));
+                            setFocusPainted(false);
+                        }
+
+                        // Override the paintComponent() method to draw a rounded sky blue gradient background
+                        @Override
+                        protected void paintComponent(Graphics g) {
+                            Graphics2D g2d = (Graphics2D) g.create();
+                            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                            int width = 90;
+                            int height = getHeight();
+                            GradientPaint gradient = new GradientPaint(0, 0, new Color(135, 206, 250),
+                                    0, height, new Color(0, 191, 255));
+                            g2d.setPaint(gradient);
+                            g2d.fillRoundRect(0, 0, width, height, height, height);
+                            g2d.dispose();
+                            super.paintComponent(g);
+                        }
+                    };
                     check.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
@@ -306,7 +330,31 @@ public class Page extends JFrame {
                         }
                     });
                     rowPanel.add(check);
-                    JButton remove = new JButton("Remove");
+                    JButton remove = new JButton("Remove"){
+                        {
+                            // Set the button's appearance and behavior
+                            setContentAreaFilled(false);
+                            setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
+                            setForeground(Color.WHITE);
+                            setFont(new Font("Arial", Font.BOLD, 14));
+                            setFocusPainted(false);
+                        }
+
+                        // Override the paintComponent() method to draw a rounded sky blue gradient background
+                        @Override
+                        protected void paintComponent(Graphics g) {
+                            Graphics2D g2d = (Graphics2D) g.create();
+                            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                            int width = 90;
+                            int height = getHeight();
+                            GradientPaint gradient = new GradientPaint(0, 0, new Color(227,23,13),
+                                    0, height, new Color(255, 100, 0));
+                            g2d.setPaint(gradient);
+                            g2d.fillRoundRect(0, 0, width, height, height, height);
+                            g2d.dispose();
+                            super.paintComponent(g);
+                        }
+                    };
                     remove.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
@@ -334,6 +382,30 @@ public class Page extends JFrame {
                 scrollPanel.setViewportView(contentPanel);
                 historyPanel.add(scrollPanel, BorderLayout.CENTER);
                 JButton back = new JButton("Back");
+//                    {
+//                        // Set the button's appearance and behavior
+//                        setContentAreaFilled(true);
+//                        setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
+//                        setForeground(Color.black);
+//                        setFont(new Font("Arial", Font.BOLD, 14));
+//                        setFocusPainted(false);
+//                    }
+//
+//                    // Override the paintComponent() method to draw a rounded sky blue gradient background
+//                    @Override
+//                    protected void paintComponent(Graphics g) {
+//                        Graphics2D g2d = (Graphics2D) g.create();
+//                        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//                        int width = 100;
+//                        int height = getHeight();
+//                        GradientPaint gradient = new GradientPaint(0, 0, new Color(128,118,105),
+//                                0, height, new Color(118,128,105));
+//                        g2d.setPaint(gradient);
+//                        g2d.fillRoundRect(0, 0, width, height, height, height);
+//                        g2d.dispose();
+//                        super.paintComponent(g);
+//                    }
+//                };
                 back.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -342,6 +414,30 @@ public class Page extends JFrame {
                     }
                 });
                 JButton removeAll = new JButton("Remove All");
+//                    {
+//                        // Set the button's appearance and behavior
+//                        setContentAreaFilled(true);
+//                        setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
+//                        setForeground(Color.black);
+//                        setFont(new Font("Arial", Font.BOLD, 14));
+//                        setFocusPainted(false);
+//                    }
+//
+//                    // Override the paintComponent() method to draw a rounded sky blue gradient background
+//                    @Override
+//                    protected void paintComponent(Graphics g) {
+//                        Graphics2D g2d = (Graphics2D) g.create();
+//                        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//                        int width = 100;
+//                        int height = getHeight();
+//                        GradientPaint gradient = new GradientPaint(0, 0, new Color(227,23,13),
+//                                0, height, new Color(255, 100, 0));
+//                        g2d.setPaint(gradient);
+//                        g2d.fillRoundRect(0, 0, width, height, height, height);
+//                        g2d.dispose();
+//                        super.paintComponent(g);
+//                    }
+//                };
                 removeAll.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -374,13 +470,13 @@ public class Page extends JFrame {
         c.weighty = 0;
         c.anchor = GridBagConstraints.CENTER;
         c.insets = new Insets(5, 10, 10, 10);
-        progressLabel = new JLabel("Progress: 0%", JLabel.CENTER);
-        panel.add(progressLabel, c);
+//        progressLabel = new JLabel(" ", JLabel.CENTER);
+//        panel.add(progressLabel, c);
 
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 1;
+        c.fill = GridBagConstraints.CENTER;
+        c.gridx = 0;
         c.gridy = 8;
-        c.gridwidth = 1;
+        c.gridwidth = 2;
         c.weighty = 0;
         c.anchor = GridBagConstraints.CENTER;
         c.insets = new Insets(5, 10, 10, 10);
@@ -388,19 +484,21 @@ public class Page extends JFrame {
             {
                 // Set the progress bar's appearance and behavior
                 setStringPainted(true);
-                setForeground(Color.GRAY);
+                setForeground(new Color(34,139,34));
                 setFont(new Font("Arial", Font.BOLD, 16));
             }
 
             // Override the getPreferredSize() method to set the progress bar's preferred size
             @Override
             public Dimension getPreferredSize() {
-                return new Dimension(super.getPreferredSize().width, 30);
+                return new Dimension(750, 30);
             }
         };
+//        progressBar.setSize(700, 20);
+//        progressBar.setLocation((panel.getWidth() - progressBar.getWidth()) / 2, (panel.getHeight() - progressBar.getHeight()) / 2);
         progressBar.setMinimum(0);
         progressBar.setMaximum(100);
-        panel.add(progressBar, c);
+        panel.add(progressBar,c);
 
         add(panel);
 
@@ -411,7 +509,7 @@ public class Page extends JFrame {
         protected List<List<Integer>> doInBackground() {
 
             textArea.setText("Starting...Please wait...");
-            progressLabel.setText("Progress: 0%");
+//            progressLabel.setText("Progress: 0%");
             progressBar.setValue(0);
 
             List<List<Integer>> result = new ArrayList<>();
@@ -455,7 +553,7 @@ public class Page extends JFrame {
                 resultStr += list.toString() + "\n";
             }
             resultStr += "\n";
-            resultStr += "Reuslt Size: " + result.size() + "\n"
+            resultStr += "Reuslt Size: " + result.size() + "\n"+"\n"
                     + "Total time cost: " + (System.currentTimeMillis() - startTime) + "ms";
             textArea.setText(resultStr);
 
