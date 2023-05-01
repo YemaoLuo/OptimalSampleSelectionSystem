@@ -190,8 +190,16 @@ public class Page extends JFrame {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             String data = dbh.load(file);
-                            UIManager.put("OptionPane.okButtonText", "OK");
-                            JOptionPane.showMessageDialog(null, data, "History Result", JOptionPane.PLAIN_MESSAGE);
+                            JScrollPane scrollPanel = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                            JTextArea label = new JTextArea(data);
+                            scrollPanel.setViewportView(label);
+                            JFrame frame = new JFrame(file);
+                            frame.setSize(300, 500);
+                            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                            frame.add(scrollPanel);
+                            frame.setLocationRelativeTo(null);
+                            frame.setResizable(false);
+                            frame.setVisible(true);
                         }
                     });
                     rowPanel.add(check);
