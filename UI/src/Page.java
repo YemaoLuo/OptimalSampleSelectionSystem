@@ -1,4 +1,10 @@
 import javax.swing.*;
+import java.awt.Color;
+import java.awt.Font;
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,7 +33,18 @@ public class Page extends JFrame {
         ImageIcon icon = new ImageIcon("./res/icon.png");
         setIconImage(icon.getImage());
 
-        JPanel panel = new JPanel(new GridBagLayout());
+        JPanel panel = new JPanel(new GridBagLayout()){
+            // Override the paintComponent() method to draw a gradient background
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
+                GradientPaint gradient = new GradientPaint(0, 0,new Color(61, 145, 64),
+                        getWidth(), getHeight(),  new Color(255, 255, 255));
+                g2d.setPaint(gradient);
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+            }
+        };
 
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -35,52 +52,92 @@ public class Page extends JFrame {
         c.insets = new Insets(10, 10, 0, 10);
         c.gridx = 0;
         c.gridy = 0;
-        label1 = new JLabel("m：[45, 54]");
+        label1 = new JLabel("m:[45,54]");
+        label1.setFont(new Font("Arial", Font.BOLD, 24));
+        label1.setForeground(Color.WHITE);
         panel.add(label1, c);
 
         c.gridx = 1;
         c.gridy = 0;
         textField1 = new JTextField();
+        textField1.setBackground(Color.WHITE);
+        textField1.setForeground(Color.DARK_GRAY);
+        textField1.setFont(new Font("Arial", Font.PLAIN, 14));
+        Border border = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2);
+        textField1.setBorder(BorderFactory.createCompoundBorder(border,
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)));
         panel.add(textField1, c);
 
         c.gridx = 0;
         c.gridy = 1;
-        label2 = new JLabel("n： [7, 25]");
+        label2 = new JLabel("n:[7,25]");
+        label2.setFont(new Font("Arial", Font.BOLD, 24));
+        label2.setForeground(Color.WHITE);
         panel.add(label2, c);
 
         c.gridx = 1;
         c.gridy = 1;
         textField2 = new JTextField();
+        textField2.setBackground(Color.WHITE);
+        textField2.setForeground(Color.DARK_GRAY);
+        textField2.setFont(new Font("Arial", Font.PLAIN, 14));
+//        Border border = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2);
+        textField2.setBorder(BorderFactory.createCompoundBorder(border,
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)));
         panel.add(textField2, c);
 
         c.gridx = 0;
         c.gridy = 2;
-        label3 = new JLabel("k： [4, 7]");
+        label3 = new JLabel("k:[4,7]");
+        label3.setFont(new Font("Arial", Font.BOLD, 24));
+        label3.setForeground(Color.WHITE);
         panel.add(label3, c);
 
         c.gridx = 1;
         c.gridy = 2;
         textField3 = new JTextField();
+        textField3.setBackground(Color.WHITE);
+        textField3.setForeground(Color.DARK_GRAY);
+        textField3.setFont(new Font("Arial", Font.PLAIN, 14));
+//        Border border = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2);
+        textField3.setBorder(BorderFactory.createCompoundBorder(border,
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)));
         panel.add(textField3, c);
 
         c.gridx = 0;
         c.gridy = 3;
-        label4 = new JLabel("j：  [s, k]");
+        label4 = new JLabel("j:[3,k]");
+        label4.setFont(new Font("Arial", Font.BOLD, 24));
+        label4.setForeground(Color.WHITE);
         panel.add(label4, c);
 
         c.gridx = 1;
         c.gridy = 3;
         textField4 = new JTextField();
+        textField4.setBackground(Color.WHITE);
+        textField4.setForeground(Color.DARK_GRAY);
+        textField4.setFont(new Font("Arial", Font.PLAIN, 14));
+//        Border border = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2);
+        textField4.setBorder(BorderFactory.createCompoundBorder(border,
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)));
         panel.add(textField4, c);
 
         c.gridx = 0;
         c.gridy = 4;
-        label5 = new JLabel("s： [3, 7]");
+        label5 = new JLabel("s:[3,j]");
+        label5.setFont(new Font("Arial", Font.BOLD, 24));
+        label5.setForeground(Color.WHITE);
         panel.add(label5, c);
 
         c.gridx = 1;
         c.gridy = 4;
         textField5 = new JTextField();
+        textField5.setBackground(Color.WHITE);
+        textField5.setForeground(Color.DARK_GRAY);
+        textField5.setFont(new Font("Arial", Font.PLAIN, 14));
+//        Border border = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2);
+        textField5.setBorder(BorderFactory.createCompoundBorder(border,
+                BorderFactory.createEmptyBorder(5, 10, 5, 10)));
         panel.add(textField5, c);
 
         c.fill = GridBagConstraints.BOTH;
@@ -91,6 +148,13 @@ public class Page extends JFrame {
         c.anchor = GridBagConstraints.NORTH;
         c.insets = new Insets(10, 10, 10, 10);
         textArea = new JTextArea();
+        textArea.setEditable(false);
+        textArea.setBackground(Color.WHITE);
+        textArea.setForeground(Color.BLACK);
+        textArea.setFont(new Font("Arial", Font.PLAIN, 12));
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        textArea.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panel.add(new JScrollPane(textArea), c);
 
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -100,7 +164,30 @@ public class Page extends JFrame {
         c.weighty = 0;
         c.anchor = GridBagConstraints.CENTER;
         c.insets = new Insets(10, 10, 0, 10);
-        startEndBtn = new JButton("Start/End");
+        startEndBtn = new JButton("Start/End"){
+            {
+                // Set the button's appearance and behavior
+                setContentAreaFilled(false);
+                setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+                setForeground(Color.WHITE);
+                setFont(new Font("Arial", Font.BOLD, 14));
+                setFocusPainted(false);
+            }
+            // Override the paintComponent() method to draw a rounded green gradient background
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                int width = getWidth();
+                int height = getHeight();
+                GradientPaint gradient = new GradientPaint(0, 0, new Color(75, 186, 105),
+                        0, height, new Color(0, 129, 69));
+                g2d.setPaint(gradient);
+                g2d.fillRoundRect(0, 0, width, height, height, height);
+                g2d.dispose();
+                super.paintComponent(g);
+            }
+        };
         startEndBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -160,7 +247,31 @@ public class Page extends JFrame {
         c.weighty = 0;
         c.anchor = GridBagConstraints.CENTER;
         c.insets = new Insets(10, 10, 0, 10);
-        historyBtn = new JButton("History");
+        historyBtn = new JButton("History"){
+            {
+                // Set the button's appearance and behavior
+                setContentAreaFilled(false);
+                setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+                setForeground(Color.WHITE);
+                setFont(new Font("Arial", Font.BOLD, 14));
+                setFocusPainted(false);
+            }
+
+            // Override the paintComponent() method to draw a rounded sky blue gradient background
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                int width = getWidth();
+                int height = getHeight();
+                GradientPaint gradient = new GradientPaint(0, 0, new Color(135, 206, 250),
+                        0, height, new Color(0, 191, 255));
+                g2d.setPaint(gradient);
+                g2d.fillRoundRect(0, 0, width, height, height, height);
+                g2d.dispose();
+                super.paintComponent(g);
+            }
+        };
         historyBtn.addActionListener(new ActionListener() {
 
             @Override
@@ -273,7 +384,20 @@ public class Page extends JFrame {
         c.weighty = 0;
         c.anchor = GridBagConstraints.CENTER;
         c.insets = new Insets(5, 10, 10, 10);
-        progressBar = new JProgressBar();
+        progressBar = new JProgressBar(){
+            {
+                // Set the progress bar's appearance and behavior
+                setStringPainted(true);
+                setForeground(Color.GRAY);
+                setFont(new Font("Arial", Font.BOLD, 16));
+            }
+
+            // Override the getPreferredSize() method to set the progress bar's preferred size
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(super.getPreferredSize().width, 30);
+            }
+        };
         progressBar.setMinimum(0);
         progressBar.setMaximum(100);
         panel.add(progressBar, c);
@@ -282,7 +406,6 @@ public class Page extends JFrame {
 
         setVisible(true);
     }
-
     class MySwingWorker extends SwingWorker<List<List<Integer>>, Integer> {
         @Override
         protected List<List<Integer>> doInBackground() {
