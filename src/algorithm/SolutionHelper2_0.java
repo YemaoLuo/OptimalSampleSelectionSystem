@@ -48,8 +48,8 @@ public class SolutionHelper2_0 {
         return result;
     }
 
-    private static void generateResultsCombinations(List<Integer> chosenSamples, int k, int start,
-                                                    List<Integer> temp, List<List<Integer>> result) {
+    private void generateResultsCombinations(List<Integer> chosenSamples, int k, int start,
+                                             List<Integer> temp, List<List<Integer>> result) {
         if (temp.size() == k) {
             result.add(new ArrayList<>(temp));
             return;
@@ -70,8 +70,8 @@ public class SolutionHelper2_0 {
         return result;
     }
 
-    private static void generateCoverListCombinations(List<Integer> chosenSamples, int k, int start,
-                                                      List<Integer> temp, List<Set<Integer>> result) {
+    private void generateCoverListCombinations(List<Integer> chosenSamples, int k, int start,
+                                               List<Integer> temp, List<Set<Integer>> result) {
         if (temp.size() == k) {
             result.add(new HashSet<>(temp));
             return;
