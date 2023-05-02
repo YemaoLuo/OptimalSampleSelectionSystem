@@ -59,7 +59,17 @@ public class DBHelperUI {
         try {
             String filePath = "./db/";
             File file = new File(filePath + fileName);
-            return file.delete();
+            file.delete();
+            FileInputStream fis = new FileInputStream("./db/cache.db");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            HashMap<String, Date> cache = (HashMap<String, Date>) ois.readObject();
+            cache.remove(fileName + ".data");
+            FileOutputStream fos = new FileOutputStream("./db/cache.db");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(cache);
+            oos.close();
+            fos.close();
+            return true;
         } catch (Exception e) {
             return false;
         }
@@ -129,5 +139,7 @@ public class DBHelperUI {
         for (String file : files) {
             remove(file);
         }
+        File cache = new File("./db/cache.db");
+        cache.delete();
     }
 }
