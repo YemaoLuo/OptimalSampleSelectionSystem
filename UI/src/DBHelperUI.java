@@ -63,7 +63,7 @@ public class DBHelperUI {
             FileInputStream fis = new FileInputStream("./db/cache.db");
             ObjectInputStream ois = new ObjectInputStream(fis);
             HashMap<String, Date> cache = (HashMap<String, Date>) ois.readObject();
-            cache.remove(fileName + ".data");
+            cache.remove(fileName);
             FileOutputStream fos = new FileOutputStream("./db/cache.db");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(cache);
@@ -71,6 +71,7 @@ public class DBHelperUI {
             fos.close();
             return true;
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return false;
         }
     }
@@ -125,8 +126,8 @@ public class DBHelperUI {
                     public int compare(String o1, String o2) {
                         o1 = o1.replace("-", "");
                         o2 = o2.replace("-", "");
-                        return Integer.parseInt(o1.substring(0, o1.lastIndexOf('.'))) -
-                                Integer.parseInt(o2.substring(0, o2.lastIndexOf('.')));
+                        return Integer.parseInt(o2.substring(0, o2.lastIndexOf('.'))) -
+                                Integer.parseInt(o1.substring(0, o1.lastIndexOf('.')));
                     }
                 }).collect(Collectors.toList());
             }
