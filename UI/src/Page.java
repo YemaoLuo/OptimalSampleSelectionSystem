@@ -52,7 +52,7 @@ public class Page extends JFrame {
         c.insets = new Insets(10, 10, 0, 10);
         c.gridx = 0;
         c.gridy = 0;
-        label1 = new JLabel("m: 45 ≤m≤ 54");
+        label1 = new JLabel("m: [45 , 54]");
         label1.setFont(new Font("Arial", Font.BOLD, 24));
         label1.setForeground(Color.WHITE);
         panel.add(label1, c);
@@ -70,7 +70,7 @@ public class Page extends JFrame {
 
         c.gridx = 0;
         c.gridy = 1;
-        label2 = new JLabel("n:   7  ≤n≤  25 ");
+        label2 = new JLabel("n:  [ 7  , 25] ");
         label2.setFont(new Font("Arial", Font.BOLD, 24));
         label2.setForeground(Color.WHITE);
         panel.add(label2, c);
@@ -88,7 +88,7 @@ public class Page extends JFrame {
 
         c.gridx = 0;
         c.gridy = 2;
-        label3 = new JLabel("k:   4   ≤k≤   7");
+        label3 = new JLabel("k:  [ 4 ,  7  ]");
         label3.setFont(new Font("Arial", Font.BOLD, 24));
         label3.setForeground(Color.WHITE);
         panel.add(label3, c);
@@ -106,7 +106,7 @@ public class Page extends JFrame {
 
         c.gridx = 0;
         c.gridy = 3;
-        label4 = new JLabel("j:    3   ≤j≤    k");
+        label4 = new JLabel("j:   [ 3 ,  k  ]");
         label4.setFont(new Font("Arial", Font.BOLD, 24));
         label4.setForeground(Color.WHITE);
         panel.add(label4, c);
@@ -124,7 +124,7 @@ public class Page extends JFrame {
 
         c.gridx = 0;
         c.gridy = 4;
-        label5 = new JLabel("s:   3   ≤s≤    j");
+        label5 = new JLabel("s:  [ 3 ,  j   ]");
         label5.setFont(new Font("Arial", Font.BOLD, 24));
         label5.setForeground(Color.WHITE);
         panel.add(label5, c);
@@ -386,7 +386,7 @@ public class Page extends JFrame {
                         // Set the button's appearance and behavior
                         setContentAreaFilled(false);
                         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
-                        setForeground(Color.black);
+                        setForeground(Color.WHITE);
                         setFont(new Font("Arial", Font.BOLD, 14));
                         setFocusPainted(false);
                     }
@@ -418,7 +418,7 @@ public class Page extends JFrame {
                         // Set the button's appearance and behavior
                         setContentAreaFilled(false);
                         setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
-                        setForeground(Color.black);
+                        setForeground(Color.WHITE);
                         setFont(new Font("Arial", Font.BOLD, 14));
                         setFocusPainted(false);
                     }
