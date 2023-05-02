@@ -76,7 +76,7 @@ public class DBHelperUI {
         }
     }
 
-    public boolean loadDB() {
+    private boolean loadDB() {
         try {
             File folder = new File("./db");
             if (!folder.exists()) {
