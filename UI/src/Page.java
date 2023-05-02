@@ -340,7 +340,7 @@ public class Page extends JFrame {
                 resultStr += list.toString() + "\n";
             }
             resultStr += "\n";
-            resultStr += "Reuslt Size: " + result.size() + "\n"
+            resultStr += "Reuslt Size: " + result.size() + "\n" + "\n"
                     + "Total time cost: " + (System.currentTimeMillis() - startTime) + "ms";
             textArea.setText(resultStr);
 
