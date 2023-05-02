@@ -213,8 +213,8 @@ public class Page extends JFrame {
                             if (result == JOptionPane.YES_OPTION) {
                                 dbh.remove(file);
                                 historyPanel.setVisible(false);
-                                panel.setVisible(true);
-                                historyBtn.doClick();
+                                contentPanel.remove(rowPanel);
+                                historyPanel.setVisible(true);
                             }
                         }
                     });
