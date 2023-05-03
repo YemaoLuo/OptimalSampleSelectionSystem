@@ -13,7 +13,6 @@ public class Page extends JFrame {
     private JButton historyBtn;
     private JTextArea textArea;
     private JProgressBar progressBar;
-    private JLabel progressLabel;
     private MySwingWorker worker;
     private DBHelperUI dbh = new DBHelperUI();
     private SolutionHelperUI sh = new SolutionHelperUI();
@@ -181,6 +180,7 @@ public class Page extends JFrame {
                 gbc.gridx = 0;
                 gbc.gridy = 0;
                 for (String file : files) {
+                    historyPanel.setAlignmentY(Component.TOP_ALIGNMENT);
                     JPanel rowPanel = new JPanel();
                     rowPanel.setLayout(new GridLayout(1, 3, 10, 10));
                     JLabel fileLabel = new JLabel(file);
@@ -223,7 +223,7 @@ public class Page extends JFrame {
                     contentPanel.add(rowPanel, gbc);
                 }
                 if (files.size() == 0) {
-                    JLabel emptyLabel = new JLabel("No history data!", SwingConstants.CENTER);
+                    JLabel emptyLabel = new JLabel("No history data", SwingConstants.CENTER);
                     emptyLabel.setFont(new Font("Arial", Font.PLAIN, 20));
                     gbc.gridy++;
                     contentPanel.add(emptyLabel, gbc);
@@ -264,26 +264,19 @@ public class Page extends JFrame {
         });
         panel.add(historyBtn, c);
 
-        c.fill = GridBagConstraints.NONE;
+        c.fill = GridBagConstraints.BOTH;
         c.gridx = 0;
         c.gridy = 8;
-        c.gridwidth = 1;
+        c.gridwidth = 2;
         c.weighty = 0;
+        c.insets = new Insets(5, 10, 5, 10);
         c.anchor = GridBagConstraints.CENTER;
-        c.insets = new Insets(5, 10, 10, 10);
-        progressLabel = new JLabel("Progress: 0%", JLabel.CENTER);
-        panel.add(progressLabel, c);
-
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 1;
-        c.gridy = 8;
-        c.gridwidth = 1;
-        c.weighty = 0;
-        c.anchor = GridBagConstraints.CENTER;
-        c.insets = new Insets(5, 10, 10, 10);
         progressBar = new JProgressBar();
         progressBar.setMinimum(0);
         progressBar.setMaximum(100);
+        progressBar.setString("0%");
+        progressBar.setStringPainted(true);
+        progressBar.setFont(new Font("Arial", Font.BOLD, 20));
         panel.add(progressBar, c);
 
         add(panel);
@@ -296,7 +289,6 @@ public class Page extends JFrame {
         protected List<List<Integer>> doInBackground() {
 
             textArea.setText("Starting...Please wait...");
-            progressLabel.setText("Progress: 0%");
             progressBar.setValue(0);
 
             List<List<Integer>> result = new ArrayList<>();
@@ -352,13 +344,13 @@ public class Page extends JFrame {
         protected void process(List<Integer> chunks) {
             int value = chunks.get(chunks.size() - 1);
             progressBar.setValue(value);
-            progressLabel.setText("Progress: " + value + "%");
+            progressBar.setString(value + "%");
         }
 
         @Override
         protected void done() {
             progressBar.setValue(100);
-            progressLabel.setText("Progress: 100%");
+            progressBar.setString(100 + "%");
         }
     }
 
