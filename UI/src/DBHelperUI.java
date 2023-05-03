@@ -138,7 +138,7 @@ public class DBHelperUI {
     public void removeAll() {
         List<String> files = readAllDBFiles();
         for (String file : files) {
-            remove(file + ".data");
+            remove(file);
         }
         File cache = new File("./db/cache.db");
         cache.delete();

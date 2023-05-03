@@ -155,6 +155,7 @@ public class SolutionHelper2_0 {
             System.out.println(String.format("%.2f", (1 - coverList.size() / initSize) * 100) + "%");
             List<Integer> candidateResult = getCandidateResult(possibleResults, coverList, s);
             removeCoveredResults(candidateResult, coverList, s);
+            possibleResults.remove(candidateResult);
             result.add(candidateResult);
         }
         return result;
