@@ -34,52 +34,62 @@ public class Page extends JFrame {
         c.insets = new Insets(10, 10, 0, 10);
         c.gridx = 0;
         c.gridy = 0;
-        label1 = new JLabel("m：[45, 54]");
+        label1 = new JLabel("m: [45, 54]");
+        label1.setFont(new Font("Calibri", Font.BOLD, 16));
         panel.add(label1, c);
 
         c.gridx = 1;
         c.gridy = 0;
         textField1 = new JTextField();
+        textField1.setFont(new Font("Calibri", Font.PLAIN, 16));
         panel.add(textField1, c);
 
         c.gridx = 0;
         c.gridy = 1;
-        label2 = new JLabel("n： [7, 25]");
+        label2 = new JLabel("n:  [7, 25]");
+        label2.setFont(new Font("Calibri", Font.BOLD, 16));
         panel.add(label2, c);
 
         c.gridx = 1;
         c.gridy = 1;
         textField2 = new JTextField();
+        textField2.setFont(new Font("Calibri", Font.PLAIN, 16));
         panel.add(textField2, c);
 
         c.gridx = 0;
         c.gridy = 2;
-        label3 = new JLabel("k： [4, 7]");
+        label3 = new JLabel("k:  [4, 7]");
+        label3.setFont(new Font("Calibri", Font.BOLD, 16));
         panel.add(label3, c);
 
         c.gridx = 1;
         c.gridy = 2;
         textField3 = new JTextField();
+        textField3.setFont(new Font("Calibri", Font.PLAIN, 16));
         panel.add(textField3, c);
 
         c.gridx = 0;
         c.gridy = 3;
-        label4 = new JLabel("j：  [s, k]");
+        label4 = new JLabel("j:   [s, k]");
+        label4.setFont(new Font("Calibri", Font.BOLD, 16));
         panel.add(label4, c);
 
         c.gridx = 1;
         c.gridy = 3;
         textField4 = new JTextField();
+        textField4.setFont(new Font("Calibri", Font.PLAIN, 16));
         panel.add(textField4, c);
 
         c.gridx = 0;
         c.gridy = 4;
-        label5 = new JLabel("s： [3, 7]");
+        label5 = new JLabel("s:  [3, 7]");
+        label5.setFont(new Font("Calibri", Font.BOLD, 16));
         panel.add(label5, c);
 
         c.gridx = 1;
         c.gridy = 4;
         textField5 = new JTextField();
+        textField5.setFont(new Font("Calibri", Font.PLAIN, 16));
         panel.add(textField5, c);
 
         c.fill = GridBagConstraints.BOTH;
@@ -90,6 +100,7 @@ public class Page extends JFrame {
         c.anchor = GridBagConstraints.NORTH;
         c.insets = new Insets(10, 10, 10, 10);
         textArea = new JTextArea();
+        textArea.setFont(new Font("Calibri", Font.PLAIN, 18));
         panel.add(new JScrollPane(textArea), c);
 
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -100,10 +111,10 @@ public class Page extends JFrame {
         c.anchor = GridBagConstraints.CENTER;
         c.insets = new Insets(10, 10, 0, 10);
         startEndBtn = new JButton("Start/End");
+        startEndBtn.setFont(new Font("Calibri", Font.BOLD, 16));
         startEndBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ImageIcon errorIcon = new ImageIcon("./res/error.png");
                 if (worker != null && !worker.isDone()) {
                     Object[] options = {"Yes", "No"};
                     int result = JOptionPane.showOptionDialog(null, "Running in progress. Sure to end?", "Confirm",
@@ -135,7 +146,7 @@ public class Page extends JFrame {
                                 "n is within the range of [7, 25]\n" +
                                 "k is within the range of [4, 7]\n" +
                                 "s is within the range of [3, 7]\n" +
-                                "j is between the minimum value of s and k", "Error", JOptionPane.ERROR_MESSAGE, errorIcon);
+                                "j is between the minimum value of s and k", "Error", JOptionPane.ERROR_MESSAGE, null);
                         return;
                     }
                 } catch (Exception ex) {
@@ -143,7 +154,7 @@ public class Page extends JFrame {
                     JOptionPane.showMessageDialog(null, "Input invalid! \n" +
                             "m is within the range of [45, 54], n is within the range of [7, 25]\n" +
                             "k is within the range of [4, 7], s is within the range of [3, 7]\n" +
-                            "j is between the minimum value of s and k.", "Error", JOptionPane.ERROR_MESSAGE, errorIcon);
+                            "j is between the minimum value of s and k.", "Error", JOptionPane.ERROR_MESSAGE, null);
                     return;
                 }
                 worker = new MySwingWorker();
@@ -160,6 +171,7 @@ public class Page extends JFrame {
         c.anchor = GridBagConstraints.CENTER;
         c.insets = new Insets(10, 10, 0, 10);
         historyBtn = new JButton("History");
+        historyBtn.setFont(new Font("Calibri", Font.BOLD, 16));
         historyBtn.addActionListener(new ActionListener() {
 
             @Override
@@ -182,18 +194,22 @@ public class Page extends JFrame {
                 for (String file : files) {
                     historyPanel.setAlignmentY(Component.TOP_ALIGNMENT);
                     JPanel rowPanel = new JPanel();
-                    rowPanel.setLayout(new GridLayout(1, 3, 10, 10));
+                    rowPanel.setLayout(new GridLayout(1, 3, 5, 10));
                     JLabel fileLabel = new JLabel(file);
+                    fileLabel.setFont(new Font("Calibri", Font.BOLD, 16));
                     rowPanel.add(fileLabel);
-                    JButton check = new JButton("Check");
+                    JButton check = new JButton("Detail");
+                    check.setFont(new Font("Calibri", Font.BOLD, 16));
                     check.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             String data = dbh.load(file);
                             JScrollPane scrollPanel = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
                             JTextArea label = new JTextArea(data);
+                            label.setFont(new Font("Calibri", Font.BOLD, 16));
                             scrollPanel.setViewportView(label);
                             JFrame frame = new JFrame(file);
+                            frame.setIconImage(icon.getImage());
                             frame.setSize(300, 500);
                             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                             frame.add(scrollPanel);
@@ -204,12 +220,13 @@ public class Page extends JFrame {
                     });
                     rowPanel.add(check);
                     JButton remove = new JButton("Remove");
+                    remove.setFont(new Font("Calibri", Font.BOLD, 16));
                     remove.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             Object[] options = {"Yes", "No"};
                             int result = JOptionPane.showOptionDialog(null, "Confirm to remove this history data?", "Confirm",
-                                    JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Yes");
+                                    JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, null);
                             if (result == JOptionPane.YES_OPTION) {
                                 dbh.remove(file);
                                 historyPanel.setVisible(false);
@@ -224,13 +241,16 @@ public class Page extends JFrame {
                 }
                 if (files.size() == 0) {
                     JLabel emptyLabel = new JLabel("No history data", SwingConstants.CENTER);
-                    emptyLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+                    emptyLabel.setFont(new Font("Calibri", Font.PLAIN, 20));
                     gbc.gridy++;
                     contentPanel.add(emptyLabel, gbc);
                 }
                 scrollPanel.setViewportView(contentPanel);
                 historyPanel.add(scrollPanel, BorderLayout.CENTER);
                 JButton back = new JButton("Back");
+                Dimension buttonSize = new Dimension(180, back.getPreferredSize().height);
+                back.setPreferredSize(buttonSize);
+                back.setFont(new Font("Calibri", Font.BOLD, 16));
                 back.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -239,12 +259,15 @@ public class Page extends JFrame {
                     }
                 });
                 JButton removeAll = new JButton("Remove All");
+                Dimension buttonSize2 = new Dimension(180, removeAll.getPreferredSize().height);
+                removeAll.setPreferredSize(buttonSize2);
+                removeAll.setFont(new Font("Calibri", Font.BOLD, 16));
                 removeAll.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         Object[] options = {"Yes", "No"};
                         int result = JOptionPane.showOptionDialog(null, "Confirm to remove all history data?", "Confirm",
-                                JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Yes");
+                                JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, null);
                         if (result == JOptionPane.YES_OPTION) {
                             dbh.removeAll();
                             contentPanel.removeAll();
@@ -276,7 +299,7 @@ public class Page extends JFrame {
         progressBar.setMaximum(100);
         progressBar.setString("0%");
         progressBar.setStringPainted(true);
-        progressBar.setFont(new Font("Arial", Font.BOLD, 20));
+        progressBar.setFont(new Font("Calibri", Font.BOLD, 16));
         panel.add(progressBar, c);
 
         add(panel);
