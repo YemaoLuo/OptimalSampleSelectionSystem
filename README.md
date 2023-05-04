@@ -59,3 +59,6 @@
 > >
 > > v2.1 skip some possibleResults
 > > > Reduced some time cost
+> > >
+> > v2.2 skip some nCj
+> > > Reduced some time cost
