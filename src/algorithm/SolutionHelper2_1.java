@@ -110,7 +110,7 @@ public class SolutionHelper2_1 {
                 .orElse(null);
     }
 
-    public List<Integer> getCandidateResultSingleThread(List<Integer> candidateResult, List<List<Integer>> possibleResults, List<Set<Integer>> coverList, int s) {
+    public List<Integer> getCandidateResultSingleThread(List<List<Integer>> possibleResults, List<Set<Integer>> coverList, int s) {
         AtomicInteger max = new AtomicInteger(0);
         AtomicReference<List<Integer>> res = new AtomicReference<>();
         possibleResults.forEach((possibleResult -> {
