@@ -56,3 +56,6 @@
 >
 > > v2.0 get rid or the map and use the number of cases satisfy to judge
 > > > Reduced tremendous time cost!!!
+> >
+> > v2.1 skip some possibleResults
+> > > Reduced some time cost
