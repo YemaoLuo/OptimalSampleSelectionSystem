@@ -338,8 +338,10 @@ public class Page extends JFrame {
                     setProgress((int) percent);
                 }
             } else {
+                List<Integer> candidateResult = new ArrayList<>();
+                candidateResult.add(-1);
                 while (!coverList.isEmpty()) {
-                    List<Integer> candidateResult = sh.getCandidateResult(possibleResults, coverList, s);
+                    candidateResult = sh.getCandidateResult(candidateResult, possibleResults, coverList, s);
                     result.add(candidateResult);
                     sh.removeCoveredResults(candidateResult, coverList, s);
                     possibleResults.remove(candidateResult);
