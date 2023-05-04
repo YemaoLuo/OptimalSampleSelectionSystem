@@ -350,6 +350,7 @@ public class Page extends JFrame {
             }
 
             String resultStr = "";
+            resultStr += "Chosen samples: \n" + chosenSamples + "\n" + "\n";
             resultStr += "Result: \n";
             for (List<Integer> list : result) {
                 resultStr += list.toString() + "\n";
