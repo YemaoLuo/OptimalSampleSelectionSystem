@@ -107,7 +107,7 @@ public class SolutionHelper2_1 {
         return map.entrySet().stream()
                 .max(Map.Entry.comparingByValue())
                 .map(Map.Entry::getKey)
-                .orElse(null);
+                .orElse(possibleResults.get(0));
     }
 
     public List<Integer> getCandidateResultSingleThread(List<List<Integer>> possibleResults, List<Set<Integer>> coverList, int s) {
