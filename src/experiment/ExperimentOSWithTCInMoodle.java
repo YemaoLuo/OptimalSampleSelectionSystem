@@ -14,7 +14,7 @@ public class ExperimentOSWithTCInMoodle {
     public static void main(String[] args) {
         SolutionHelper2_2 sh = new SolutionHelper2_2();
 
-        String filePath = "/os22_tc.log";
+        String filePath = "/Users/yemaoluo/Documents/CODING/AIAlgorithm/experiment/os22_tc.log";
         File file = new File(filePath);
         if (!file.exists()) {
             try {
@@ -45,8 +45,8 @@ public class ExperimentOSWithTCInMoodle {
             for (int i = 0; i < 15; i++) {
                 int[] ints = tc.get(i);
                 int m = ints[0], n = ints[1], k = ints[2], j = ints[3], s = ints[4], or = ints[5];
-                System.out.println("ID = " + i);
-                bw.write("ID = " + i + "\n");
+                System.out.println("ID = " + i + 1);
+                bw.write("ID = " + i + 1 + "\n");
                 bw.write("m = " + m + ", n = " + n + ", k = " + k + ", j = " + j + ", s = " + s + "\n");
                 bw.write("====================================\n");
 
