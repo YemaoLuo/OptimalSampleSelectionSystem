@@ -45,8 +45,8 @@ public class ExperimentOSWithTCInMoodle {
             for (int i = 0; i < 15; i++) {
                 int[] ints = tc.get(i);
                 int m = ints[0], n = ints[1], k = ints[2], j = ints[3], s = ints[4], or = ints[5];
-                System.out.println("ID = " + i + 1);
-                bw.write("ID = " + i + 1 + "\n");
+                System.out.println("ID = " + (i + 1));
+                bw.write("ID = " + (i + 1) + "\n");
                 bw.write("m = " + m + ", n = " + n + ", k = " + k + ", j = " + j + ", s = " + s + "\n");
                 bw.write("====================================\n");
 
@@ -72,6 +72,7 @@ public class ExperimentOSWithTCInMoodle {
                 //List<List<Integer>> result = sh20.getResultSingleThread(possibleResults, coverList, s);
                 bw.write("Result: " + result + "\n");
                 bw.write("Result size: " + result.size() + "\n");
+                bw.write("Solution: " + or + "\n");
                 bw.write("Difference: " + (result.size() - or) + "\n");
                 bw.write("Time cost: " + (System.currentTimeMillis() - tempTime) + " ms\n");
                 bw.write("=====================================\n");
