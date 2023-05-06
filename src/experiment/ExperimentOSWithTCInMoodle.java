@@ -47,30 +47,30 @@ public class ExperimentOSWithTCInMoodle {
                 int m = ints[0], n = ints[1], k = ints[2], j = ints[3], s = ints[4], or = ints[5];
                 System.out.println("ID = " + (i + 1));
                 bw.write("ID = " + (i + 1) + "\n");
-                bw.write("m = " + m + ", n = " + n + ", k = " + k + ", j = " + j + ", s = " + s + "\n");
+                //bw.write("m = " + m + ", n = " + n + ", k = " + k + ", j = " + j + ", s = " + s + "\n");
                 bw.write("====================================\n");
 
                 long startTime = System.currentTimeMillis();
 
                 long tempTime = System.currentTimeMillis();
                 List<Integer> chosenSamples = sh.generateChosenSamples(m, n);
-                bw.write("Chosen samples: " + chosenSamples + "\n");
-                bw.write("Time cost: " + (System.currentTimeMillis() - tempTime) + " ms\n");
+                //bw.write("Chosen samples: " + chosenSamples + "\n");
+                //bw.write("Time cost: " + (System.currentTimeMillis() - tempTime) + " ms\n");
 
                 tempTime = System.currentTimeMillis();
                 List<List<Integer>> possibleResults = sh.generatePossibleResults(chosenSamples, k);
-                bw.write("Possible results size: " + possibleResults.size() + "\n");
-                bw.write("Time cost: " + (System.currentTimeMillis() - tempTime) + " ms" + "\n");
+                //bw.write("Possible results size: " + possibleResults.size() + "\n");
+                //bw.write("Time cost: " + (System.currentTimeMillis() - tempTime) + " ms" + "\n");
 
                 tempTime = System.currentTimeMillis();
                 List<List<Integer>> coverList = sh.generateCoverList(chosenSamples, j);
-                bw.write("Cover list size: " + coverList.size() + "\n");
-                bw.write("Time cost: " + (System.currentTimeMillis() - tempTime) + " ms\n");
+                //bw.write("Cover list size: " + coverList.size() + "\n");
+                //bw.write("Time cost: " + (System.currentTimeMillis() - tempTime) + " ms\n");
 
                 tempTime = System.currentTimeMillis();
                 List<List<Integer>> result = sh.getResult(possibleResults, coverList, s);
                 //List<List<Integer>> result = sh20.getResultSingleThread(possibleResults, coverList, s);
-                bw.write("Result: " + result + "\n");
+                //bw.write("Result: " + result + "\n");
                 bw.write("Result size: " + result.size() + "\n");
                 bw.write("Solution: " + or + "\n");
                 bw.write("Difference: " + (result.size() - or) + "\n");

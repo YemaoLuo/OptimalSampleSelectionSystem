@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class Page extends JFrame {
     private JLabel label1, label2, label3, label4, label5;
@@ -324,7 +323,7 @@ public class Page extends JFrame {
             long startTime = System.currentTimeMillis();
             List<Integer> chosenSamples = sh.generateChosenSamples(m, n);
             List<List<Integer>> possibleResults = sh.generatePossibleResults(chosenSamples, k);
-            List<Set<Integer>> coverList = sh.generateCoverList(chosenSamples, j);
+            List<List<Integer>> coverList = sh.generateCoverList(chosenSamples, j);
 
             double initSize = coverList.size();
             if (n <= 12) {
