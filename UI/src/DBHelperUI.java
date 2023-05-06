@@ -40,7 +40,7 @@ public class DBHelperUI {
         if (loadDB()) {
             String filePath = "./db/";
             try {
-                File file = new File(filePath + fileName);
+                File file = new File(filePath + fileName + ".data");
                 FileReader fr = new FileReader(file);
                 BufferedReader br = new BufferedReader(fr);
                 String line;
@@ -58,14 +58,25 @@ public class DBHelperUI {
     public boolean remove(String fileName) {
         try {
             String filePath = "./db/";
-            File file = new File(filePath + fileName);
-            return file.delete();
+            File file = new File(filePath + fileName + ".data");
+            file.delete();
+            FileInputStream fis = new FileInputStream("./db/cache.db");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            HashMap<String, Date> cache = (HashMap<String, Date>) ois.readObject();
+            cache.remove(fileName);
+            FileOutputStream fos = new FileOutputStream("./db/cache.db");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(cache);
+            oos.close();
+            fos.close();
+            return true;
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return false;
         }
     }
 
-    public boolean loadDB() {
+    private boolean loadDB() {
         try {
             File folder = new File("./db");
             if (!folder.exists()) {
@@ -107,7 +118,7 @@ public class DBHelperUI {
                     public int compare(String o1, String o2) {
                         return cache.getOrDefault(o2, new Date()).compareTo(cache.getOrDefault(o1, new Date()));
                     }
-                }).collect(Collectors.toList());
+                }).map((file -> file.substring(0, file.lastIndexOf('.')))).collect(Collectors.toList());
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 data = Arrays.stream(files).map(File::getName).sorted(new Comparator<String>() {
@@ -115,8 +126,8 @@ public class DBHelperUI {
                     public int compare(String o1, String o2) {
                         o1 = o1.replace("-", "");
                         o2 = o2.replace("-", "");
-                        return Integer.parseInt(o1.substring(0, o1.lastIndexOf('.'))) -
-                                Integer.parseInt(o2.substring(0, o2.lastIndexOf('.')));
+                        return Integer.parseInt(o2.substring(0, o2.lastIndexOf('.'))) -
+                                Integer.parseInt(o1.substring(0, o1.lastIndexOf('.')));
                     }
                 }).collect(Collectors.toList());
             }
@@ -129,5 +140,7 @@ public class DBHelperUI {
         for (String file : files) {
             remove(file);
         }
+        File cache = new File("./db/cache.db");
+        cache.delete();
     }
 }

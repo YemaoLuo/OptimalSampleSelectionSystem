@@ -52,7 +52,7 @@ public class Page extends JFrame {
         c.insets = new Insets(10, 10, 0, 10);
         c.gridx = 0;
         c.gridy = 0;
-        label1 = new JLabel("m: [45 , 54]");
+        label1 = new JLabel("m: [45 , 54 ]");
         label1.setFont(new Font("Arial", Font.BOLD, 24));
         label1.setForeground(Color.WHITE);
         panel.add(label1, c);
@@ -70,7 +70,7 @@ public class Page extends JFrame {
 
         c.gridx = 0;
         c.gridy = 1;
-        label2 = new JLabel("n:  [ 7  , 25] ");
+        label2 = new JLabel("n:  [ 7  , 25 ] ");
         label2.setFont(new Font("Arial", Font.BOLD, 24));
         label2.setForeground(Color.WHITE);
         panel.add(label2, c);
@@ -88,7 +88,7 @@ public class Page extends JFrame {
 
         c.gridx = 0;
         c.gridy = 2;
-        label3 = new JLabel("k:  [ 4 ,  7  ]");
+        label3 = new JLabel("k:  [ 4  ,  7  ]");
         label3.setFont(new Font("Arial", Font.BOLD, 24));
         label3.setForeground(Color.WHITE);
         panel.add(label3, c);
@@ -106,7 +106,7 @@ public class Page extends JFrame {
 
         c.gridx = 0;
         c.gridy = 3;
-        label4 = new JLabel("j:   [ 3 ,  k  ]");
+        label4 = new JLabel("j:   [ 3  ,  k  ]");
         label4.setFont(new Font("Arial", Font.BOLD, 24));
         label4.setForeground(Color.WHITE);
         panel.add(label4, c);
@@ -124,7 +124,7 @@ public class Page extends JFrame {
 
         c.gridx = 0;
         c.gridy = 4;
-        label5 = new JLabel("s:  [ 3 ,  j   ]");
+        label5 = new JLabel("s:  [ 3  ,  j   ]");
         label5.setFont(new Font("Arial", Font.BOLD, 24));
         label5.setForeground(Color.WHITE);
         panel.add(label5, c);
@@ -151,7 +151,7 @@ public class Page extends JFrame {
         textArea.setEditable(false);
         textArea.setBackground(Color.WHITE);
         textArea.setForeground(Color.BLACK);
-        textArea.setFont(new Font("Arial", Font.PLAIN, 12));
+        textArea.setFont(new Font("Arial", Font.PLAIN, 17));
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
         textArea.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -295,6 +295,7 @@ public class Page extends JFrame {
                     JPanel rowPanel = new JPanel();
                     rowPanel.setLayout(new GridLayout(1, 0, 10, 100));
                     JLabel fileLabel = new JLabel(file);
+                    fileLabel.setFont(new Font("Arial", Font.BOLD, 20));
                     rowPanel.add(fileLabel);
                     JButton check = new JButton("Detail "){
                         {
@@ -325,8 +326,18 @@ public class Page extends JFrame {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             String data = dbh.load(file);
-                            UIManager.put("OptionPane.okButtonText", "OK");
-                            JOptionPane.showMessageDialog(null, data, "History Result", JOptionPane.PLAIN_MESSAGE);
+                            JScrollPane scrollPanel = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                            JTextArea label = new JTextArea(data);
+                            label.setFont(new Font("Arial", Font.BOLD, 16));
+                            scrollPanel.setViewportView(label);
+                            JFrame frame = new JFrame(file);
+                            frame.setIconImage(icon.getImage());
+                            frame.setSize(300, 500);
+                            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                            frame.add(scrollPanel);
+                            frame.setLocationRelativeTo(null);
+                            frame.setResizable(false);
+                            frame.setVisible(true);
                         }
                     });
                     rowPanel.add(check);
@@ -554,7 +565,7 @@ public class Page extends JFrame {
             }
             resultStr += "\n";
             resultStr += "Reuslt Size: " + result.size() + "\n"+"\n"
-                    + "Total time cost: " + (System.currentTimeMillis() - startTime) + "ms";
+                    + "Total Time Cost: " + (System.currentTimeMillis() - startTime) + "ms";
             textArea.setText(resultStr);
 
             dbh.save(m + "-" + n + "-" + k + "-" + j + "-" + s, resultStr);
