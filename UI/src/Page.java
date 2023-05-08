@@ -236,7 +236,8 @@ public class Page extends JFrame {
                                 "n is within the range of [7, 25]\n" +
                                 "k is within the range of [4, 7]\n" +
                                 "s is within the range of [3, 7]\n" +
-                                "j is between the minimum value of s and k", "Error", JOptionPane.ERROR_MESSAGE, errorIcon);
+                                "j is between the minimum value of s and k\n" +
+                                "use ',' to separate chosen samples otherwise random", "Error", JOptionPane.ERROR_MESSAGE, errorIcon);
                         return;
                     }
                 } catch (Exception ex) {
@@ -543,6 +544,9 @@ public class Page extends JFrame {
                     chosenSamples.add(Integer.parseInt(str.trim()));
                 }
                 if (chosenSamples.size() != n) {
+                    Object[] options = {"OK"};
+                    JOptionPane.showOptionDialog(null, "Input chosen samples size does not fit value n. Generate randomly.", "Notice",
+                            JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "OK");
                     chosenSamples = new ArrayList<>(sh.generateChosenSamples(m, n));
                     textField6.setText(chosenSamples.toString().substring(1, chosenSamples.toString().length() - 1));
                 }

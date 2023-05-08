@@ -22,14 +22,14 @@ public class OptimizeSolution2_2 {
 
         tempTime = System.currentTimeMillis();
         List<List<Integer>> possibleResults = sh.generatePossibleResults(chosenSamples, k);
-        //System.out.println("Possible results: " + possibleResults);
+        System.out.println("Possible results: " + possibleResults);
         System.out.println("Possible results size: " + possibleResults.size());
         System.out.println("Time cost: " + (System.currentTimeMillis() - tempTime) + " ms");
         System.out.println("=====================================");
 
         tempTime = System.currentTimeMillis();
         List<List<Integer>> coverList = sh.generateCoverList(chosenSamples, j);
-        //System.out.println("Cover list : " + coverList);
+        System.out.println("Cover list : " + coverList);
         System.out.println("Cover list size: " + coverList.size());
         System.out.println("Time cost: " + (System.currentTimeMillis() - tempTime) + " ms");
         System.out.println("=====================================");
