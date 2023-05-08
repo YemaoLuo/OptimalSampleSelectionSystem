@@ -1,6 +1,6 @@
 ## Introduction to my idea
 
-## Hill-climbing
+## Advanced greedy search
 
 #### algorithm.OptimizeSolution
 
