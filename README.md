@@ -1,6 +1,7 @@
 ## Introduction to my idea
-
+## Not opensourced until September 2023
 ## Advanced greedy search
+## [Android app OSSS](https://github.com/YemaoLuo/AIApplication)
 
 #### algorithm.OptimizeSolution
 
