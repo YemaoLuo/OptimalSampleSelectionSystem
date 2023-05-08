@@ -110,7 +110,7 @@ public class SolutionHelper2_2 {
                 .orElse(possibleResults.get(0));
     }
 
-    public List<Integer> getCandidateResultSingleThread(List<List<Integer>> possibleResults, List<Set<Integer>> coverList, int s) {
+    public List<Integer> getCandidateResultSingleThread(List<List<Integer>> possibleResults, List<List<Integer>> coverList, int s) {
         AtomicInteger max = new AtomicInteger(0);
         AtomicReference<List<Integer>> res = new AtomicReference<>();
         possibleResults.forEach((possibleResult -> {
@@ -154,7 +154,9 @@ public class SolutionHelper2_2 {
         List<List<Integer>> result = new ArrayList<>();
         double initSize = coverList.size();
         List<Integer> candidateResult = new ArrayList<>();
-        candidateResult.add(-1);
+        candidateResult = possibleResults.get(0);
+        result.add(candidateResult);
+        removeCoveredResults(candidateResult, coverList, s);
         while (coverList.size() != 0) {
             System.out.println(String.format("%.2f", (1 - coverList.size() / initSize) * 100) + "%");
             candidateResult = getCandidateResult(candidateResult, possibleResults, coverList, s);
