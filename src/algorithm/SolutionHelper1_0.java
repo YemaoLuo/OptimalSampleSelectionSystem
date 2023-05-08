@@ -88,8 +88,6 @@ public class SolutionHelper1_0 {
         return coverListMap;
     }
 
-
-    // Generate results using hill-climbing method
     public void removeCoverListMapKey(List<Integer> candidateResult, Map<List<Integer>, List<List<Integer>>> coverListMap) {
         coverListMap.remove(candidateResult);
         Iterator<Map.Entry<List<Integer>, List<List<Integer>>>> iterator = coverListMap.entrySet().iterator();

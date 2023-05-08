@@ -1,0 +1,9 @@
+Chosen samples: [34, 1, 5, 13, 19, 7, 18, 43, 2, 25, 33, 47]
+
+Result: 
+[34, 1, 5, 13, 19, 7, 18]
+[34, 1, 43, 2, 25, 33, 47]
+
+Reuslt Size: 2
+
+Total Time Cost: 62ms

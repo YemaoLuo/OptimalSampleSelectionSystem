@@ -83,7 +83,6 @@ public class SolutionHelper2_2 {
         }
     }
 
-    // Generate results using hill-climbing method
     public List<Integer> getCandidateResult(List<Integer> candidateResult, List<List<Integer>> possibleResults, List<List<Integer>> coverList, int s) {
         ConcurrentHashMap<List<Integer>, Integer> map = new ConcurrentHashMap<>();
         possibleResults.parallelStream().unordered()
