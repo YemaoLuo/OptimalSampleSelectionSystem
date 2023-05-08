@@ -1,6 +1,5 @@
 ## Introduction to my idea
-## Any form of copying and plagiarism will not be allowed until September 2023.
-
+## Not opensourced until September 2023
 ## Advanced greedy search
 
 #### algorithm.OptimizeSolution
