@@ -1,4 +1,6 @@
 ## Group work for MUST AI Course(Junior year)
+## [Report for this project](https://github.com/YemaoLuo/OptimalSampleSelectionSystem/blob/main/Artificial_Intelligence_Report.pdf)
+## [User manual for the releases](https://github.com/YemaoLuo/OptimalSampleSelectionSystem/blob/main/User_Manual.pdf)
 ## Introduction to my idea
 ## Not opensourced until September 2023
 ## Advanced greedy search
