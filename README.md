@@ -1,3 +1,4 @@
+## Group work for MUST AI Course(Junior year)
 ## Introduction to my idea
 ## Not opensourced until September 2023
 ## Advanced greedy search
